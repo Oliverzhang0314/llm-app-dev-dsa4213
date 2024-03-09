@@ -1,17 +1,19 @@
 import os
 from flask import Flask
 from config import Config
+from flask_cors import CORS
+from flask_mysqldb import MySQL
+
 
 def create_app(config_class=Config):
+    
+    mysql = MySQL(app)
     app = Flask(__name__)
+    # CORS(app)
     app.config.from_object(config_class)
 
     with app.app_context():
         from . import routes
-
-
-    @app.route('/#test/')
-    def test_page():
-        return '<h1>Testing the Flask Application Factory Pattern</h1>'
+        from .services import rag_service
 
     return app
