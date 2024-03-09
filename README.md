@@ -12,7 +12,7 @@
 
 ### 2. Start flask app
     
-    python3 main.py
+    python main.py
 
 ### 3. Start wave app
 
