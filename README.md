@@ -2,15 +2,19 @@
 
 ## Development with python
 
+### 1. Create virtual environments 
+    
+    python -m venv /path/to/new/virtual/environment
 
-### 1. install requirements
+### 1. Install requirements
 
     pip install -r requirements.txt
 
-### 2. start flask app
-    flask --app main.py run
+### 2. Start flask app
+    
+    python3 main.py
 
-### 3. start wave app
+### 3. Start wave app
 
 download the [wave server](https://wave.h2o.ai/docs/installation) before running the folloing command, see details in [wave docs](https://wave.h2o.ai/docs/apps)
     
