@@ -1,3 +1,10 @@
+##!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# @Date    : 09/03/2024
+# @Author  : Jianig Wang
+# @Email   : jianingwang124@gmail.com
+# @File    : rag_service.py
+
 from h2ogpte import H2OGPTE
 from flask import current_app as app, jsonify, request
 import os
@@ -7,6 +14,7 @@ client = H2OGPTE(
     api_key=app.config['H2O_COLLECTIOM_API_KEY'],
 )
 
+#use an exsited collection and create new chat session
 collection_id = client.create_chat_session_on_default_collection()
 
 def rag_summary_service(filenames, client=client, collection_id=collection_id):

@@ -28,7 +28,7 @@ def upload_file():
         try:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            #TODO: upload file to servie file storage system
+            #TODO: upload file to server file storage system
             success_message = jsonify({'message':'File uploaded successfully'})
             response = make_response(success_message, 200)
             return response
@@ -48,7 +48,6 @@ def rag_summary():
         success_message = jsonify({"summaries":summaries})
         response = make_response(success_message,200)
         return response
-        #TODO: create rag_summary api by using rag_summary_service
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

@@ -7,13 +7,12 @@ from flask_mysqldb import MySQL
 
 def create_app(config_class=Config):
     
-    mysql = MySQL(app)
     app = Flask(__name__)
-    # CORS(app)
     app.config.from_object(config_class)
+    mysql = MySQL(app)
+    # CORS(app)
 
     with app.app_context():
         from . import routes
-        from .services import rag_service
 
     return app
