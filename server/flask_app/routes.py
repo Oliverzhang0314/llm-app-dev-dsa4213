@@ -3,6 +3,8 @@ from flask import current_app as app, jsonify, request, make_response
 from werkzeug.utils import secure_filename
 from utils import *
 from .services.rag_service import *
+from .services.profile_service import *
+from .services.recommendation_service import *
 
 
 @app.route("/testingApi", methods=['GET'])
@@ -35,12 +37,12 @@ def upload_file():
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
-@app.route('/rag/query', methods=['GET'])
+#TODO: create rag_query api by using rag_query_service
+@app.route('/rag/query', methods=['GET','POST'])
 def rag_query():
-    #TODO: create rag_query api by using rag_query_service
         pass
 
-@app.route('/rag/summary', methods=['POST'])
+@app.route('/rag/summary', methods=['GET','POST'])
 def rag_summary():
     try:
         filenames=request.get_json().get('filenames')
@@ -51,4 +53,12 @@ def rag_summary():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-#TODO: the recommendation feature
+#TODO: use pre-defined prompts to generate candidate profile and send to frontend to build dashboard 
+@app.route('/candidate/profile',methods=['GET','POST'])
+def candidate_profile():
+    pass
+
+#TODO: the recommendation feature 
+@app.route('/candidate/recommendation', methods=['GET', 'POST'])
+def candidate_rank():
+    pass
