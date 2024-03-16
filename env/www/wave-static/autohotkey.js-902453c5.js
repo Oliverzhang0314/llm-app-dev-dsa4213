@@ -1,0 +1,1 @@
+import t from"./autohotkey-083cf3c0.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/autohotkey" instead of "highlight.js/lib/languages/autohotkey.js"'))}e();export{t as default};

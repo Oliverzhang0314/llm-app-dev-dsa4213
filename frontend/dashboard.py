@@ -20,16 +20,16 @@ async def serve(q: Q):
                                               ui.zone('rbottom', size='50%')])]),
                 ui.zone('footer', size='80px')])
                 ],
-                themes=[
-                    ui.theme(
-                        name='dsa4213',
-                        primary='#20283d',
-                        text='#470324',
-                        card='#fffffa',
-                        page='#e8e6e6',
-                        )
-                        ],
-                theme='dsa4213'
+        themes=[
+            ui.theme(
+                name='dsa4213',
+                primary='#20283d',
+                text='#470324',
+                card='#fffffa',
+                page='#e8e6e6',
+                )
+                ],
+        theme='dsa4213'
 
 )
     

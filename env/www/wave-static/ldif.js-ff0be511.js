@@ -1,0 +1,1 @@
+import n from"./ldif-39e7018a.js";function i(){i.warned||(i.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/ldif" instead of "highlight.js/lib/languages/ldif.js"'))}i();export{n as default};

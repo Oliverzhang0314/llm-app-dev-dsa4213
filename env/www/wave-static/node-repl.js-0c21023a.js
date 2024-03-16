@@ -1,0 +1,1 @@
+import n from"./node-repl-c351033a.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/node-repl" instead of "highlight.js/lib/languages/node-repl.js"'))}e();export{n as default};

@@ -1,0 +1,1 @@
+System.register([],(function(t,e){"use strict";return{execute:function(){t("default",(function(t){return{name:"LDIF",contains:[{className:"attribute",match:"^dn(?=:)",relevance:10},{className:"attribute",match:"^\\w+(?=:)"},{className:"literal",match:"^-"},t.HASH_COMMENT_MODE]}}))}}}));

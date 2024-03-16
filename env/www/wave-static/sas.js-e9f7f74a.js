@@ -1,0 +1,1 @@
+import s from"./sas-d4be0f22.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/sas" instead of "highlight.js/lib/languages/sas.js"'))}e();export{s as default};

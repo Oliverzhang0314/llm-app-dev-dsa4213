@@ -1,0 +1,1 @@
+import n from"./ceylon-7044c346.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/ceylon" instead of "highlight.js/lib/languages/ceylon.js"'))}e();export{n as default};

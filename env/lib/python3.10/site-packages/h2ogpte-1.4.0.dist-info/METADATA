@@ -1,0 +1,115 @@
+Metadata-Version: 2.1
+Name: h2ogpte
+Version: 1.4.0
+Summary: Client library for Enterprise h2oGPTe
+Author-email: Prithvi Prabhu <prithvi.prabhu@gmail.com>, Arno Candel <arno.candel@gmail.com>
+Project-URL: Source, https://github.com/h2oai/h2ogpte
+Project-URL: Issues, https://github.com/h2oai/h2ogpte/issues
+Project-URL: Documentation, https://h2oai.github.io/h2ogpte/
+Keywords: information-retrieval,LLM,large-language-models,question-answering,search,semantic-search,analytical-search,lexical-search,document-search,natural-language-querying
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: aiofiles ==23.2.1
+Requires-Dist: pydantic[dotenv] ==2.5.2
+Requires-Dist: pydantic-settings ==2.0.3
+Requires-Dist: requests ==2.31.0
+Requires-Dist: websockets ==11.0.3
+Requires-Dist: beautifulsoup4 ==4.12.2
+Requires-Dist: bs4 ==0.0.1
+Requires-Dist: lxml ==4.9.3
+Requires-Dist: pandas >=1.3.5
+Requires-Dist: h2o-authn ==1.1.1
+Requires-Dist: packaging
+Requires-Dist: httpx ==0.24.1 ; python_version < "3.8"
+Requires-Dist: httpx ==0.26.0 ; python_version >= "3.8"
+
+# h2oGPTe Python Client
+
+## Install
+
+```bash
+pip install h2ogpte
+```
+
+## Usage
+
+```python
+from h2ogpte import H2OGPTE
+
+client = H2OGPTE(
+    address='https://h2ogpte.genai.h2o.ai',
+    api_key='sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+)
+
+# Create a new collection
+collection_id = client.create_collection(
+    name='Contracts',
+    description='Paper clip supply contracts',
+)
+
+# Create documents
+# Note: Done for demonstration purposes only (not usually needed)
+with open('dunder_mifflin.txt', 'w') as f:
+    f.write('There were 55 paper clips shipped, 22 to Scranton and 33 to Filmer.')
+
+with open('initech.txt', 'w') as f:
+    f.write('David Brent did not sign any contract with Initech.')
+
+# Upload documents
+# Many file types are supported: text/image/audio documents and archives
+with open('dunder_mifflin.txt', 'rb') as f:
+    dunder_mifflin = client.upload('Dunder Mifflin.txt', f)
+
+with open('initech.txt', 'rb') as f:
+    initech = client.upload('IniTech.txt', f)
+
+# Ingest documents (Creates previews, chunks and embeddings)
+client.ingest_uploads(collection_id, [dunder_mifflin, initech])
+
+# Create a chat session
+chat_session_id = client.create_chat_session(collection_id)
+
+# Query the collection
+with client.connect(chat_session_id) as session:
+    reply = session.query(
+        'How many paper clips were shipped to Scranton?',
+        timeout=60,
+    )
+    print(reply.content)
+
+    reply = session.query(
+        'Did David Brent co-sign the contract with Initech?',
+        timeout=60,
+    )
+    print(reply.content)
+
+# Summarize each document
+documents = client.list_documents_in_collection(collection_id, offset=0, limit=99)
+for doc in documents:
+    summary = client.summarize_document(
+        document_id=doc.id,
+        timeout=60,
+    )
+    print(summary.content)
+
+# Chat with LLM without a collection
+chat_session_id = client.create_chat_session()
+
+with client.connect(chat_session_id) as session:
+    reply = session.query(
+        'Why is drinking water good for you?',
+        timeout=60,
+    )
+    print(reply.content)
+```
+

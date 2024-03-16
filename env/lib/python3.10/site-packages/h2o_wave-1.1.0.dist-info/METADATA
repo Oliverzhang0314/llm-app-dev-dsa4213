@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: h2o-wave
+Version: 1.1.0
+Summary: Python driver for H2O Wave Realtime Apps
+Project-URL: Homepage, https://wave.h2o.ai/
+Project-URL: Documentation, https://wave.h2o.ai/
+Project-URL: Repository, https://github.com/h2oai/wave
+Project-URL: Changelog, https://github.com/h2oai/wave/releases
+Author-email: Prithvi Prabhu <prithvi@h2o.ai>
+Maintainer-email: Martin Turoci <martin.turoci@h2o.ai>, Marek Mihok <marek.mihok@h2o.ai>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Keywords: Data Science,Low code,Machine Learning,Realtime,UI
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Widget Sets
+Classifier: Topic :: System :: Distributed Computing
+Requires-Python: >=3.8
+Requires-Dist: click
+Requires-Dist: httpx>=0.16.1
+Requires-Dist: inquirer
+Requires-Dist: starlette>=0.13.8
+Requires-Dist: uvicorn>=0.17.6
+Description-Content-Type: text/x-rst
+
+H2O Wave
+========
+
+H2O Wave is a lightweight software stack for programming interactive web applications
+entirely in Python (no HTML/Javascript/CSS required).
+
+It is designed to make it fast, fun and easy to build low-latency, realtime,
+collaborative, web-based applications. It ships batteries-included with
+a suite of form and data visualization components for rapidly prototyping
+analytical and decision-support applications.
+
+Wave's components work in conjunction with the Wave relay server that facilitates
+realtime state synchronization between Python and web browsers.
+
+
+Installing
+----------
+
+Install and update using `pip`_:
+
+.. code-block:: text
+
+    pip install -U h2o-wave
+
+
+Hello world
+----------------
+
+``hello.py``:
+
+.. code-block:: python
+
+    from h2o_wave import main, app, Q, ui
+
+
+    @app('/')
+    async def serve(q: Q):
+        q.page['hello'] = ui.markdown_card(
+            box='1 1 3 3',
+            title='Hello world!',
+            content='Welcome to Wave!'
+        )
+        await q.page.save()
+
+
+Run ``hello.py``:
+
+.. code-block:: text
+
+    $ wave run hello.py
+
+
+Links
+-----
+
+* Website: https://wave.h2o.ai/
+* Releases: https://pypi.org/project/h2o-wave/
+* Code: https://github.com/h2oai/wave
+* Issue tracker: https://github.com/h2oai/wave/issues
+
+.. _pip: https://pip.pypa.io/en/stable/quickstart/
+

@@ -1,0 +1,1 @@
+import n from"./csp-b9668226.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/csp" instead of "highlight.js/lib/languages/csp.js"'))}e();export{n as default};

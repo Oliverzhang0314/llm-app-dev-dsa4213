@@ -1,0 +1,1 @@
+import n from"./monkey-bf0d5fb4.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/monkey" instead of "highlight.js/lib/languages/monkey.js"'))}e();export{n as default};

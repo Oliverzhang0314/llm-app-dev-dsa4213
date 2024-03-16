@@ -1,0 +1,1 @@
+import n from"./ebnf-c82500bd.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/ebnf" instead of "highlight.js/lib/languages/ebnf.js"'))}e();export{n as default};

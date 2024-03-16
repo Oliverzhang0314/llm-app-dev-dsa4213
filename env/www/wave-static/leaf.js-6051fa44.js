@@ -1,0 +1,1 @@
+import n from"./leaf-1983c9fd.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/leaf" instead of "highlight.js/lib/languages/leaf.js"'))}e();export{n as default};

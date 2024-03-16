@@ -1,0 +1,1 @@
+import n from"./shell-c79fdff2.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/shell" instead of "highlight.js/lib/languages/shell.js"'))}e();export{n as default};

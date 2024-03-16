@@ -1,0 +1,1 @@
+import a from"./avrasm-9c20c591.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/avrasm" instead of "highlight.js/lib/languages/avrasm.js"'))}e();export{a as default};

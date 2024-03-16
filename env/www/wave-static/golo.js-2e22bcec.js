@@ -1,0 +1,1 @@
+import n from"./golo-a8b30a3b.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/golo" instead of "highlight.js/lib/languages/golo.js"'))}e();export{n as default};

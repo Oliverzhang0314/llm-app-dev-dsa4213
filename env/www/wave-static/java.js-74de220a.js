@@ -1,0 +1,1 @@
+import a from"./java-09cf3d63.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/java" instead of "highlight.js/lib/languages/java.js"'))}e();export{a as default};

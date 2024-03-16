@@ -1,0 +1,2 @@
+[console_scripts]
+wave = h2o_wave.cli:main

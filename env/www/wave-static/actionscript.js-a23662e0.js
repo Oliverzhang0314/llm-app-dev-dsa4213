@@ -1,0 +1,1 @@
+import n from"./actionscript-970abe00.js";function i(){i.warned||(i.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/actionscript" instead of "highlight.js/lib/languages/actionscript.js"'))}i();export{n as default};
