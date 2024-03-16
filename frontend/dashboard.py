@@ -1,29 +1,25 @@
 from h2o_wave import main, app, Q, ui
 
-
-
 @app('/')
 async def serve(q: Q):
     q.page['meta'] = ui.meta_card(box='', layouts=[
         ui.layout(
             breakpoint='xs',
             width='1300px',
+
+            # Create zones for each divisions
             zones=[
                 ui.zone('header', size='76px'),
-                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='95px',
-                        align='center', justify='around'),
-
-                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='385px'),
-                ui.zone('bottom', direction=ui.ZoneDirection.ROW, size='385px', zones=[
-                    ui.zone('bottom_left'),
-                    ui.zone('bottom_right', size='66%'),
-                ]),
-                ui.zone('footer', size='80px'),
-            ]
-        )
-    ])
+                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='95px', align='center', justify='around'),
+                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around', 
+                        zones=[ui.zone('middle_left'),
+                               ui.zone('middle_right', size='70%',justify='between',direction=ui.ZoneDirection.COLUMN, 
+                                       zones=[ui.zone('rtop'),
+                                              ui.zone('rbottom')])]),
+                ui.zone('footer', size='80px')])
+                ])
     
-    q.page['header'] = ui.header_card(box='header', title='Resume Analysis', subtitle='dsa4213-group-project',
+    q.page['header'] = ui.header_card(box='header', title='Resume Analysis', subtitle='DSA4213 Group Whisper',
                                     image='https://wave.h2o.ai/img/h2o-logo.svg')
     
     '''
@@ -67,5 +63,19 @@ async def serve(q: Q):
                 ui.choice(name='department_3', label='Department 3')
     ])])
 
+
+    # Create KPI Card
+    q.page['kpi'] = ui.form_card(box='middle_left',items=[
+    ui.stats(inset=True, justify='between', items=[
+        ui.stat(label='',value='70', caption='Current'),
+        ui.stat(label='',value='+2', caption='vs YSTD'),
+        ui.stat(label='', value='2.85%', caption='∆'),
+    ])
+])
+    # Create table title
+    q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='Top 4 Candidate Recommendation', color='card')
+
+    # Create table
+    
     await q.page.save()
 
