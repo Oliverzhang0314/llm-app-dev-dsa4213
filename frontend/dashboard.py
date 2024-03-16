@@ -5,19 +5,33 @@ async def serve(q: Q):
     q.page['meta'] = ui.meta_card(box='', layouts=[
         ui.layout(
             breakpoint='xs',
-            width='1300px',
+            #width='1200px',
 
             # Create zones for each divisions
             zones=[
                 ui.zone('header', size='76px'),
-                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='95px', align='center', justify='around'),
-                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around', 
-                        zones=[ui.zone('middle_left'),
-                               ui.zone('middle_right', size='70%',justify='between',direction=ui.ZoneDirection.COLUMN, 
+                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='105px'),
+                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around',
+                        zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN, 
+                                       zones=[ui.zone('ltop'),
+                                              ui.zone('lbottom')]),
+                               ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
-                                              ui.zone('rbottom')])]),
+                                              ui.zone('rbottom', size='50%')])]),
                 ui.zone('footer', size='80px')])
-                ])
+                ],
+                themes=[
+                    ui.theme(
+                        name='dsa4213',
+                        primary='#20283d',
+                        text='#470324',
+                        card='#fffffa',
+                        page='#e8e6e6',
+                        )
+                        ],
+                theme='dsa4213'
+
+)
     
     q.page['header'] = ui.header_card(box='header', title='Resume Analysis', subtitle='DSA4213 Group Whisper',
                                     image='https://wave.h2o.ai/img/h2o-logo.svg')
@@ -38,7 +52,7 @@ async def serve(q: Q):
     
     # Create filters
     q.page['filter1'] = ui.form_card(
-        box='filters',
+        box=ui.box('filters'),
         items=[
             ui.dropdown(name='open_positions', label='Open Positions', choices=[
                 ui.choice(name='position_1', label='Position 1'),
@@ -65,17 +79,47 @@ async def serve(q: Q):
 
 
     # Create KPI Card
-    q.page['kpi'] = ui.form_card(box='middle_left',items=[
-    ui.stats(inset=True, justify='between', items=[
-        ui.stat(label='',value='70', caption='Current'),
-        ui.stat(label='',value='+2', caption='vs YSTD'),
-        ui.stat(label='', value='2.85%', caption='∆'),
+    q.page['kpi'] = ui.form_card(box=ui.box('ltop'), items=[
+        ui.stats(inset=True, justify='between',items=[
+            ui.stat(label='',value='70', caption='Current'),
+            ui.stat(label='',value='+2', caption='vs YSTD'),
+            ui.stat(label='', value='2.85%', caption='∆'),
     ])
+    # todo: add color to numbers based on +/- change
+ 
 ])
-    # Create table title
-    q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='Top 4 Candidate Recommendation', color='card')
-
-    # Create table
     
+    # Create table title
+    q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
+
+    # Table content
+    names = ['name','exp','education','strength','rjt','trjt','resume']
+    labels = ['Name','Experience Level(Yr)','Education','Strength','Most Rec Job','Unemployed Duration(M)','Resume']
+    data = []
+
+    q.page['table'] = ui.form_card(box='rbottom', items=[
+    ui.table(
+        name='table',
+        columns=[
+            ui.table_column(name=names[0], label=labels[0]),
+            ui.table_column(name=names[1], label=labels[1], filterable=True),
+            ui.table_column(name=names[2], label=labels[2]),
+            ui.table_column(name=names[3], label=labels[3]),
+            ui.table_column(name=names[4], label=labels[4]),
+            ui.table_column(name=names[5], label=labels[5]),
+            ui.table_column(name=names[6], label=labels[6])
+            ],
+        rows=[
+            ui.table_row(name='row1', cells=['John','1']),
+            ui.table_row(name='row2', cells=['Alice','0.5']),
+            ui.table_row(name='row3', cells=['Bob','2']),
+            ui.table_row(name='row4', cells=['John','1']),
+            ui.table_row(name='row5', cells=['Alice','2']),
+            ui.table_row(name='row6', cells=['Bob','2']),
+            ui.table_row(name='row7', cells=['John','1']),
+            ui.table_row(name='row8', cells=['Alice','1']),
+        ],
+    )
+])
     await q.page.save()
 

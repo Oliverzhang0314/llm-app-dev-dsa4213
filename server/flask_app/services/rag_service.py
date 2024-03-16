@@ -45,7 +45,7 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
     
     # Summarize each document
     summaries = []
-    # documents = client.list_documents_in_collection(collection_id, offset=0, limit=99)
+    documents = client.list_documents_in_collection(collection_id, offset=0, limit=99)
     for doc in documents:
         summary = client.summarize_document(
             document_id=doc.id,
