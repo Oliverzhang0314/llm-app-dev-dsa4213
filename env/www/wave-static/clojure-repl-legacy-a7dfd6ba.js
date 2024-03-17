@@ -1,0 +1,1 @@
+System.register([],(function(e,t){"use strict";return{execute:function(){e("default",(function(e){return{name:"Clojure REPL",contains:[{className:"meta.prompt",begin:/^([\w.-]+|\s*#_)?=>/,starts:{end:/$/,subLanguage:"clojure"}}]}}))}}}));

@@ -1,0 +1,1 @@
+import n from"./pf-647ee253.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/pf" instead of "highlight.js/lib/languages/pf.js"'))}e();export{n as default};

@@ -1,0 +1,1 @@
+import n from"./dsconfig-e810963a.js";function i(){i.warned||(i.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/dsconfig" instead of "highlight.js/lib/languages/dsconfig.js"'))}i();export{n as default};

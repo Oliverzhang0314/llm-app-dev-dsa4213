@@ -1,0 +1,1 @@
+import n from"./pgsql-67be9c80.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/pgsql" instead of "highlight.js/lib/languages/pgsql.js"'))}e();export{n as default};

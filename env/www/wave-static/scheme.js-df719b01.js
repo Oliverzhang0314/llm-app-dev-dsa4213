@@ -1,0 +1,1 @@
+import n from"./scheme-090728b4.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/scheme" instead of "highlight.js/lib/languages/scheme.js"'))}e();export{n as default};

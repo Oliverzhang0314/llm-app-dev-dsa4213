@@ -1,0 +1,1 @@
+import n from"./ini-565c1ab6.js";function i(){i.warned||(i.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/ini" instead of "highlight.js/lib/languages/ini.js"'))}i();export{n as default};

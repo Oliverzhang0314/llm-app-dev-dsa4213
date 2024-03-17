@@ -1,0 +1,1 @@
+import n from"./cal-68febb00.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/cal" instead of "highlight.js/lib/languages/cal.js"'))}e();export{n as default};

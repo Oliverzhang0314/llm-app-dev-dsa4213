@@ -1,0 +1,1 @@
+import n from"./bnf-6d48c389.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/bnf" instead of "highlight.js/lib/languages/bnf.js"'))}e();export{n as default};

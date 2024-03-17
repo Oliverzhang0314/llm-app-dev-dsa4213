@@ -1,0 +1,1 @@
+import n from"./c-f46565f0.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/c" instead of "highlight.js/lib/languages/c.js"'))}e();export{n as default};
