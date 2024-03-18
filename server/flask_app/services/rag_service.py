@@ -15,7 +15,14 @@ client = H2OGPTE(
 )
 
 #use an exsited collection and create new chat session
-collection_id = client.create_chat_session_on_default_collection()
+chat_session_id = client.create_chat_session_on_default_collection()
+default_collection = client.get_default_collection()
+collection_id = default_collection.id
+# collection_id = client.create_collection(
+#     name='Resume',
+#     description='ResumeAnalysis',
+# )
+
 
 def rag_summary_service(filenames, client=client, collection_id=collection_id):
     """generate summary of each documents by h2ogpt 
