@@ -4,3 +4,5 @@ env/
 venv/
 .venv/
 .env/
+.DS_Store
+server/config.py
