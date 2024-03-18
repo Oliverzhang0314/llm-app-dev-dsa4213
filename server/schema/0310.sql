@@ -12,7 +12,14 @@ CREATE TABLE candidates (
     candidate_rank INT NOT NULL CHECK (candidate_rank > 0),
     candidate_name VARCHAR(50) NOT NULL,
     candidate_age INT CHECK (candidate_age > 0 AND candidate_age < 100),
-    candidate_gender ENUM ('Male', 'Female', 'Other')
+    candidate_experience ENUM ('Entry', 'Mid', 'Senior')
+    candidate_gender ENUM ('Male', 'Female', 'Other'),
+    candidate_MostRecenJobTitle VARCHAR(255),
+    candidate_education VARCHAR(255),
+    candidate_strength VARCHAR(255),
+    candidate_MonthFromPreviousEmployment INT,
+    candidate_AllJobTitles VARCHAR(255)
+
     -- TODO: discuss what other columns to add
 );
 
