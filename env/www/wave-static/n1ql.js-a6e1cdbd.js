@@ -1,1 +1,0 @@
-import n from"./n1ql-c980c0d8.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/n1ql" instead of "highlight.js/lib/languages/n1ql.js"'))}e();export{n as default};

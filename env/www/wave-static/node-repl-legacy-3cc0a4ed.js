@@ -1,1 +1,0 @@
-System.register([],(function(t,e){"use strict";return{execute:function(){t("default",(function(t){return{name:"Node REPL",contains:[{className:"meta.prompt",starts:{end:/ |$/,starts:{end:"$",subLanguage:"javascript"}},variants:[{begin:/^>(?=[ ]|$)/},{begin:/^\.\.\.(?=[ ]|$)/}]}]}}))}}}));

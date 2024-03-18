@@ -1,1 +1,0 @@
-import n from"./protobuf-96c705d8.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/protobuf" instead of "highlight.js/lib/languages/protobuf.js"'))}e();export{n as default};

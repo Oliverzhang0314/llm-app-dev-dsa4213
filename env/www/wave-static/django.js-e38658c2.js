@@ -1,1 +1,0 @@
-import n from"./django-49d52be8.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/django" instead of "highlight.js/lib/languages/django.js"'))}e();export{n as default};

@@ -1,1 +1,0 @@
-import n from"./lua-33e3bed2.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/lua" instead of "highlight.js/lib/languages/lua.js"'))}e();export{n as default};

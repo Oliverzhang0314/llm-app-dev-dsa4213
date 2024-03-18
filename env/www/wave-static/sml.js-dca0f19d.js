@@ -1,1 +1,0 @@
-import n from"./sml-3d2ff45b.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/sml" instead of "highlight.js/lib/languages/sml.js"'))}e();export{n as default};

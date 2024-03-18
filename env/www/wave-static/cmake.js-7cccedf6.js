@@ -1,1 +1,0 @@
-import n from"./cmake-b4ce297d.js";function e(){e.warned||(e.warned=!0,console.log('Deprecation (warning): Using file extension in specifier is deprecated, use "highlight.js/lib/languages/cmake" instead of "highlight.js/lib/languages/cmake.js"'))}e();export{n as default};
