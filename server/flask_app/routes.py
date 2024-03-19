@@ -11,7 +11,9 @@ from .services.recommendation_service import *
 def test():
     data = {'sentence':"this is a testing message"}
     return jsonify(data),200
-
+@app.route('/')
+def index():
+    return "welcome to flask server"
 @app.route('/file/upload', methods=['GET','POST'])
 def upload_file():
     if 'file' not in request.files:
