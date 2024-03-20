@@ -13,8 +13,8 @@ async def serve(q: Q):
                 ui.zone('filters', direction=ui.ZoneDirection.ROW, size='105px'),
                 ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around',
                         zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN, 
-                                       zones=[ui.zone('ltop'),
-                                              ui.zone('lbottom')]),
+                                       zones=[ui.zone('ltop', size='40%'),
+                                              ui.zone('lbottom', size='40%')]),
                                ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
                                               ui.zone('rbottom', size='50%')])]),
@@ -120,6 +120,13 @@ async def serve(q: Q):
             ui.table_row(name='row8', cells=['Alice','1']),
         ],
     )
+])
+    
+    # Create Pie Chart (Experience Level Distribution)
+    q.page['exp_dits'] = ui.wide_pie_stat_card(box='lbottom', title='Experience Level Distribution', pies=[
+        ui.pie(label='0-1 years', value='65%', fraction=0.65, color='blue'),
+        ui.pie(label='2-4 years', value='25%', fraction=0.25, color='pink'),
+        ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
 ])
     await q.page.save()
 
