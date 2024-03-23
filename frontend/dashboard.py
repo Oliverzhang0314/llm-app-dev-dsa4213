@@ -1,4 +1,4 @@
-from h2o_wave import main, app, Q, ui
+from h2o_wave import main, app, Q, data, ui
 
 @app('/')
 async def serve(q: Q):
@@ -84,13 +84,39 @@ async def serve(q: Q):
             ui.stat(label='',value='70', caption='Current'),
             ui.stat(label='',value='+2', caption='vs YSTD'),
             ui.stat(label='', value='2.85%', caption='∆'),
-    ])
+        ])
     # todo: add color to numbers based on +/- change
  
-])
+    ])
     
     # Create table title
     q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
+    # Create Top Candidates Radar Plots for Strength Comnparison
+
+    q.page['top1Radar'] = ui.plot_card(
+        box = ('middle'),
+        title ='Radar Plot',
+        data = data('Metrics Score', 6, rows=[
+            ('Work Attitude', 8),
+            ('Attendance', 9),
+            ('Collaboration', 9),
+            ('Communication', 8),
+            ('Competitiveness', 9.3),
+            ('Technical Skills', 9.3),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
 
     # Table content
     names = ['name','exp','education','strength','rjt','trjt','resume']
