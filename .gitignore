@@ -4,4 +4,14 @@ env/
 venv/
 .venv/
 .env/
+.env
 .DS_Store
+pyvenv.cfg
+data/
+bin/
+include/
+lib/
+share/
+waved
+www/
+project_templates/
