@@ -1,4 +1,5 @@
-from h2o_wave import main, app, Q, data, ui
+from h2o_wave import main, app, Q, ui
+from h2o_wave import data as da
 
 @app('/')
 async def serve(q: Q):
@@ -17,8 +18,9 @@ async def serve(q: Q):
                                               ui.zone('lbottom', size='40%')]),
                                ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
+                                              ui.zone('rmid', size = '45%', justify ='between', direction = ui.ZoneDirection.ROW),
                                               ui.zone('rbottom', size='50%')])]),
-                ui.zone('footer', size='80px')])
+                ui.zone('footer', size='80px')]),
                 ],
         themes=[
             ui.theme(
@@ -94,9 +96,9 @@ async def serve(q: Q):
     # Create Top Candidates Radar Plots for Strength Comnparison
 
     q.page['top1Radar'] = ui.plot_card(
-        box = ('middle'),
+        box = ui.box('rmid', order = 1, size = 10),
         title ='Radar Plot',
-        data = data('Metrics Score', 6, rows=[
+        data = da('Metrics Score', 6, rows=[
             ('Work Attitude', 8),
             ('Attendance', 9),
             ('Collaboration', 9),
@@ -118,6 +120,55 @@ async def serve(q: Q):
         ]),
     )
 
+    q.page['top2Radar'] = ui.plot_card(
+        box = ui.box('rmid', order = 2, size = 10),
+        title ='Candidate2',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 7),
+            ('Attendance', 9),
+            ('Collaboration', 8),
+            ('Communication', 8),
+            ('Competitiveness', 7.5),
+            ('Technical Skills', 6.3),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top3Radar'] = ui.plot_card(
+        box = ui.box('rmid', order = 3, size = 10),
+        title ='Candidate3',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 7),
+            ('Attendance', 8),
+            ('Collaboration', 7),
+            ('Communication', 6),
+            ('Competitiveness', 7.5),
+            ('Technical Skills', 7),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
     # Table content
     names = ['name','exp','education','strength','rjt','trjt','resume']
     labels = ['Name','Experience Level(Yr)','Education','Strength','Most Rec Job','Unemployed Duration(M)','Resume']
