@@ -12,10 +12,10 @@ async def serve(q: Q):
             zones=[
                 ui.zone('header', size='76px'),
                 ui.zone('filters', direction=ui.ZoneDirection.ROW, size='105px'),
-                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around',
+                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px',
                         zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN,
-                                       zones=[ui.zone('ltop', size='40%'),
-                                              ui.zone('lbottom', size='40%')]),
+                                       zones=[ui.zone('ltop', size='50%'),
+                                              ui.zone('lbottom', size='50%')]),
                                ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
                                               ui.zone('rmid', size = '45%', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
