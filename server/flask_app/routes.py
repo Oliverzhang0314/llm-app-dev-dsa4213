@@ -7,7 +7,7 @@ from .services.profile_service import *
 from .services.recommendation_service import *
 
 
-@app.route("/testingApi", methods=['GET'])
+@app.route("/", methods=['GET'])
 def test():
     data = {'sentence':"this is a testing message"}
     return jsonify(data),200
