@@ -23,6 +23,18 @@ collection_id = default_collection.id
 #     description='ResumeAnalysis',
 # )
 
+def rag_file_upload_service(filenames:list, client=client, collection_id=collection_id):
+    
+    upload_files=[]
+    
+    for filename in filenames:  
+        with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
+            upload_files.append(client.upload(os.path.join(app.config['UPLOAD_FOLDER'], filename), f))
+    print(upload_files)
+
+    # Ingest documents (Creates previews, chunks and embeddings)
+    client.ingest_uploads(collection_id, upload_files)
+
 
 def rag_summary_service(filenames, client=client, collection_id=collection_id):
     """generate summary of each documents by h2ogpt 
@@ -47,7 +59,7 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
     client.ingest_uploads(collection_id, upload_files)
 
     # Create a chat session
-    chat_session_id = client.create_chat_session(collection_id)
+    chat_session_id = client.create_chat_session_on_default_collection()
 
     
     # Summarize each document
@@ -58,7 +70,7 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
             document_id=doc.id,
             timeout=60,
         )
-        summaries.append(summary)
+        summaries.append(summary.content)
     
     return summaries
 
