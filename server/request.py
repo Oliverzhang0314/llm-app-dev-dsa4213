@@ -1,20 +1,18 @@
 import requests
 import os
 
-#Get current directory
-current_directory = os.getcwd()
 # URL of your Flask API endpoint
 url = 'http://127.0.0.1:4000/file/upload'
 file_name = 'dunder_mifflin.txt'
 # Path to the file you want to upload
-file_path = os.path.join(current_directory, '..', 'data', file_name)
+file_path = os.path.join('..', 'data', file_name)
 
 
 # Open the file
 with open(file_path, 'rb') as file:
     # Create a dictionary with the file data
     files = {'file': (file_path, file, 'text/plain')}  # 'file' is the form field name
-
+     
     # Send a POST request with the file
     response = requests.post(url, files=files)
 

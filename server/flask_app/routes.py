@@ -5,8 +5,17 @@ from utils import *
 from .services.rag_service import *
 from .services.profile_service import *
 from .services.recommendation_service import *
+import h2oeGPT 
+from h2ogpte import H2OGPTE
 
-
+client = H2OGPTE(
+    address='https://h2ogpte.genai.h2o.ai',
+    api_key='sk-PjKpZEo0lhNQVL81yBcvqh3Ydg6hmixzRp7WpA1PI1698kmQ',
+)
+collection_id = client.create_collection(
+    name='test-zxy',
+    description='test create non-client speficy collection',
+)
 @app.route("/", methods=['GET'])
 def test():
     data = {'sentence':"this is a testing message"}
@@ -30,12 +39,20 @@ def upload_file():
         try:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            #TODO: upload file to server file storage system
-            success_message = jsonify({'message':'File uploaded successfully'})
+            response_from_upload = h2oeGPT.upload_documents(client, collection_id, filename)
+            success_message = jsonify({
+                'message': 'File uploaded and processed successfully',
+                'response_from_upload': response_from_upload
+            })
             response = make_response(success_message, 200)
             return response
         except Exception as e:
             return jsonify({'error': str(e)}), 500
+
+    else:
+        error_message = jsonify({'message': 'Invalid file type. Allowed extensions: txt, pdf, png, jpg, jpeg, gif'})
+        response = make_response(error_message, 400)
+        return response
 
 #TODO: create rag_query api by using rag_query_service
 @app.route('/rag/query', methods=['GET','POST'])
