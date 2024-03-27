@@ -1,24 +1,26 @@
-from h2o_wave import main, app, Q, data, ui
+from h2o_wave import main, app, Q, ui
+from h2o_wave import data as da
 
 @app('/')
 async def serve(q: Q):
     q.page['meta'] = ui.meta_card(box='', layouts=[
         ui.layout(
-            breakpoint='xs',
+            breakpoint='m',
             #width='1200px',
 
             # Create zones for each divisions
             zones=[
                 ui.zone('header', size='76px'),
                 ui.zone('filters', direction=ui.ZoneDirection.ROW, size='105px'),
-                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around',
-                        zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN, 
-                                       zones=[ui.zone('ltop', size='40%'),
-                                              ui.zone('lbottom', size='40%')]),
+                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px',
+                        zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN,
+                                       zones=[ui.zone('ltop', size='50%'),
+                                              ui.zone('lbottom', size='50%')]),
                                ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
+                                              ui.zone('rmid', size = '45%', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
                                               ui.zone('rbottom', size='50%')])]),
-                ui.zone('footer', size='80px')])
+                ui.zone('footer', size='80px')]),
                 ],
         themes=[
             ui.theme(
@@ -36,19 +38,6 @@ async def serve(q: Q):
     q.page['header'] = ui.header_card(box='header', title='Resume Analysis', subtitle='DSA4213 Group Whisper',
                                     image='https://wave.h2o.ai/img/h2o-logo.svg')
     
-    '''
-    q.page['title'] = ui.section_card(
-        box='title',
-        title='Resume Analysis',
-        subtitle='Subtitle',
-        items=[
-            ui.toggle(name='search', label='sample term', value=True),
-            ui.dropdown(name='distribution', label='', value='option0', choices=[
-                ui.choice(name=f'option{i}', label='sample term') for i in range(5)
-            ]),
-            ui.date_picker(name='target_date', label='', value='2020-12-25'),
-        ])
-    '''
     
     # Create filters
     q.page['filter1'] = ui.form_card(
@@ -118,6 +107,81 @@ async def serve(q: Q):
         ]),
     )
 
+    q.page['top1Radar'] = ui.plot_card(
+        box = ui.box('rmid', order = 1, size = 10),
+        title ='Radar Plot',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 8),
+            ('Attendance', 9),
+            ('Collaboration', 9),
+            ('Communication', 8),
+            ('Competitiveness', 9.3),
+            ('Technical Skills', 9.3),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top2Radar'] = ui.plot_card(
+        box = ui.box('rmid', order = 2, size = 10),
+        title ='Candidate2',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 7),
+            ('Attendance', 9),
+            ('Collaboration', 8),
+            ('Communication', 8),
+            ('Competitiveness', 7.5),
+            ('Technical Skills', 6.3),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top3Radar'] = ui.plot_card(
+        box = ui.box('rmid', order = 3, size = 10),
+        title ='Candidate3',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 6),
+            ('Attendance', 5),
+            ('Collaboration', 5),
+            ('Communication', 4),
+            ('Competitiveness', 7.5),
+            ('Technical Skills', 9),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
     # Table content
     names = ['name','exp','education','strength','rjt','trjt','resume']
     labels = ['Name','Experience Level(Yr)','Education','Strength','Most Rec Job','Unemployed Duration(M)','Resume']
@@ -129,11 +193,11 @@ async def serve(q: Q):
         columns=[
             ui.table_column(name=names[0], label=labels[0]),
             ui.table_column(name=names[1], label=labels[1], filterable=True),
-            ui.table_column(name=names[2], label=labels[2]),
-            ui.table_column(name=names[3], label=labels[3]),
-            ui.table_column(name=names[4], label=labels[4]),
-            ui.table_column(name=names[5], label=labels[5]),
-            ui.table_column(name=names[6], label=labels[6])
+            ui.table_column(name=names[2], label=labels[2], filterable=True),
+            ui.table_column(name=names[3], label=labels[3], filterable=True),
+            ui.table_column(name=names[4], label=labels[4], filterable=True),
+            ui.table_column(name=names[5], label=labels[5], filterable=True),
+            ui.table_column(name=names[6], label=labels[6], filterable=True)
             ],
         rows=[
             ui.table_row(name='row1', cells=['John','1']),
