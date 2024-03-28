@@ -18,6 +18,6 @@ with open(file_path, 'rb') as file:
 
 # Check the response
 if response.status_code == 200:
-    print("File uploaded successfully.")
+    print(response.text)
 else:
     print("Upload failed:", response.text)
