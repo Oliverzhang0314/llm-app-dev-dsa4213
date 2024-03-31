@@ -1,10 +1,9 @@
-
 def upload_documents(client, collection_id,file_path):
     # Upload documents
     with open(file_path, 'rb') as f:
         dunder_mifflin = client.upload(file_path, f)       
     # Ingest documents (Creates previews, chunks and embeddings)
-    client.ingest_uploads(collection_id, [dunder_mifflin])
+    return client.ingest_uploads(collection_id, [dunder_mifflin])
 
 def summarize_documents(client, collection_id):
     documents = client.list_documents_in_collection(collection_id, offset=0, limit=99)

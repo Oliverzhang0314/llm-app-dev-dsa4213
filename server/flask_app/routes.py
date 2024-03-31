@@ -14,6 +14,7 @@ client = H2OGPTE(
 )
 chat_session_id= client.create_chat_session_on_default_collection()
 collection_id=client.get_collection_for_chat_session(chat_session_id).id
+collection_name=client.get_collection_for_chat_session(chat_session_id).name
 if collection_id is not None:
     # Print or use the collection ID
     print("Collection ID:")
@@ -43,14 +44,18 @@ def upload_file():
     if file and allowed_file(file.filename):
         try:
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
+            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
             response_from_upload = h2oeGPT.upload_documents(client,collection_id, filename)
             success_message = jsonify({
                 'message': 'File uploaded and processed successfully',
-                'collection_id': collection_id
+                'collection_id': collection_id,
+                'collection_name': collection_name,
+                'filename':filename
             })
             response = make_response(success_message, 200)
-            return response
+            return f"{response_from_upload}"
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 

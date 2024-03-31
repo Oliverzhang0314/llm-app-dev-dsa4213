@@ -1,10 +1,3 @@
-##!/usr/bin/python3
-# -*- coding: utf-8 -*-
-# @Date    : 09/03/2024
-# @Author  : Jianig Wang
-# @Email   : jianingwang124@gmail.com
-# @File    : rag_service.py
-
 from h2ogpte import H2OGPTE
 from flask import current_app as app, jsonify, request
 import os
