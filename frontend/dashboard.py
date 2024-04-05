@@ -1,5 +1,7 @@
 from h2o_wave import main, app, Q, ui
 from h2o_wave import data as da
+import os
+import os.path
 
 @app('/')
 async def serve(q: Q):
@@ -9,17 +11,17 @@ async def serve(q: Q):
             #width='1200px',
 
             # Create zones for each divisions
-            zones=[
-                ui.zone('header', size='76px'),
-                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='105px'),
-                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px',
-                        zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN,
-                                       zones=[ui.zone('ltop', size='50%'),
-                                              ui.zone('lbottom', size='50%')]),
-                               ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
+            zones=[ # 76, 105, 780
+                ui.zone('header', size='5%'),
+                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='7%'),
+                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='85%',
+                        zones=[ui.zone('middle_left',size='35%', direction=ui.ZoneDirection.COLUMN,
+                                       zones=[ui.zone('ltop', size='10%'),
+                                              ui.zone('lbottom', size='60%')]),
+                               ui.zone('middle_right', size='65%',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
-                                              ui.zone('rmid', size = '45%', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
-                                              ui.zone('rbottom', size='50%')])]),
+                                              ui.zone('rmid', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
+                                              ui.zone('rbottom')])]),
                 ui.zone('footer', size='80px')]),
                 ],
         themes=[
@@ -78,19 +80,28 @@ async def serve(q: Q):
  
 ])
     
+    # Re-create table title:
+
+    q.page['tb_title'] = ui.form_card(
+        box= ui.box(zone='rtop', size='0'),
+        items=[
+            ui.text_l('| Top 4 Candidate Recommendation'),
+        ],
+    )
+    
     # Create table title
-    q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
+    #q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
 
     q.page['top1Radar'] = ui.plot_card(
-        box = ui.box('rmid', order = 1, size = 10),
+        box = ui.box('rmid'),
         title ='Radar Plot',
         data = da('Metrics Score', 6, rows=[
             ('Work Attitude', 8),
-            ('Attendance', 9),
+            ('Adaptability', 9),
             ('Collaboration', 9),
             ('Communication', 8),
-            ('Competitiveness', 9.3),
-            ('Technical Skills', 9.3),
+            ('Work Ethics', 9.3),
+            ('Leadership', 9.3),
         ]),
         plot=ui.plot([
         ui.mark(
@@ -107,15 +118,15 @@ async def serve(q: Q):
     )
 
     q.page['top2Radar'] = ui.plot_card(
-        box = ui.box('rmid', order = 2, size = 10),
+        box = ui.box('rmid'),
         title ='Candidate2',
         data = da('Metrics Score', 6, rows=[
             ('Work Attitude', 7),
-            ('Attendance', 9),
-            ('Collaboration', 8),
-            ('Communication', 8),
-            ('Competitiveness', 7.5),
-            ('Technical Skills', 6.3),
+            ('Adaptability', 9),
+            ('Collaboration', 6.8),
+            ('Communication', 7),
+            ('Work Ethics', 9),
+            ('Leadership', 5),
         ]),
         plot=ui.plot([
         ui.mark(
@@ -132,15 +143,40 @@ async def serve(q: Q):
     )
 
     q.page['top3Radar'] = ui.plot_card(
-        box = ui.box('rmid', order = 3, size = 10),
+        box = ui.box('rmid'),
         title ='Candidate3',
         data = da('Metrics Score', 6, rows=[
             ('Work Attitude', 6),
-            ('Attendance', 5),
+            ('Adaptability', 6),
             ('Collaboration', 5),
             ('Communication', 4),
-            ('Competitiveness', 7.5),
-            ('Technical Skills', 9),
+            ('Work Ethics', 9.3),
+            ('Leadership', 6),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top4Radar'] = ui.plot_card(
+        box = ui.box('rmid'),
+        title ='Candidate4',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 6),
+            ('Adaptability', 6),
+            ('Collaboration', 5),
+            ('Communication', 4),
+            ('Work Ethics', 7),
+            ('Leadership', 6),
         ]),
         plot=ui.plot([
         ui.mark(
@@ -192,5 +228,45 @@ async def serve(q: Q):
         ui.pie(label='2-4 years', value='25%', fraction=0.25, color='pink'),
         ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
 ])
+    # Upload button
+    links = q.args.user_files
+    if links:
+        items = [ui.text_xl('Files uploaded!')]
+        for link in links:
+            local_path = await q.site.download(link, '.')
+            #
+            # The file is now available locally; process the file.
+            # To keep this example simple, we just read the file size.
+            #
+            size = os.path.getsize(local_path)
+
+            items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
+            # Clean up
+            os.remove(local_path)
+
+        items.append(ui.button(name='back', label='Back', primary=True))
+        q.page['Upload'].items = items
+    else:
+        q.page['Upload'] = ui.form_card(box='lbottom', items=[
+            ui.text_xl('Upload candidate resume files here'),
+            ui.file_upload(name='user_files', label='Upload', multiple=True),
+        ])
+
+    # Chat Bot
+    q.page['chat_bot'] = ui.chatbot_card(
+        box='rbottom',
+        name='chatbot', 
+        data=da(fields='content from_user', t='list', rows=[
+            ['Hello. Can you help me analyze technical skills of Alice?', True],
+            ['Sure!', False],
+        ]),
+        events=['scroll']
+        )   
+    
+    # Download link or results
+    download_path = "" #await q.site.upload(['results.csv'])
+    q.page['download'] = ui.form_card(box='lbottom', items = [
+        ui.link(label='Download Results', path=download_path, download=True),
+    ])
     await q.page.save()
 
