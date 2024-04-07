@@ -25,7 +25,7 @@ def candidates_table(k: int=10):
 
     # Execute a SELECT query
     query = f"""
-            SELECT * 
+            SELECT name, gender, education, experience_level, strength, last_job, last_job_date
             FROM candidates
             LIMIT {k}
             """
