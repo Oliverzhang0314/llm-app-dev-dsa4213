@@ -2,6 +2,7 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 import pandas as pd
+from datetime import datetime
 
 # Load environment variables from the .env file
 load_dotenv(os.path.join("..", "..", "..", ".env"))
@@ -25,7 +26,8 @@ def candidates_table(k: int=10):
 
     # Execute a SELECT query
     query = f"""
-            SELECT name, gender, education, experience_level, strength, last_job, last_job_date
+            SELECT name, gender, education, experience_level, strength, last_job,
+            TIMESTAMPDIFF(MONTH, STR_TO_DATE(CONCAT(last_job_date, '-01'), '%Y-%m-%d'), NOW()) AS last_employed
             FROM candidates
             LIMIT {k}
             """
