@@ -11,3 +11,5 @@ pyvenv.cfg
 project_templates/
 www/
 waved
+share/
+.env
