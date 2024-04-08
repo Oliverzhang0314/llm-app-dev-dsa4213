@@ -61,7 +61,7 @@ def candidate_profile():
     pass
 
 #TODO: the recommendation feature 
-@app.route('/candidate/recommendation', methods=['GET'])
+@app.route('/candidate/recommendation/table', methods=['GET'])
 def candidate_rank():
     try:
         position = request.args.get('position', "position_applied")
