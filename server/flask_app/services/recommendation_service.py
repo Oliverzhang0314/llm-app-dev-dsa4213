@@ -17,18 +17,38 @@ def connect_to_db():
     )
     return connection
 
-def candidates_table(k: int=10):
+def candidates_table(position, region, dept, k: int=10):
     # Connect to the MySQL database
     connection = connect_to_db()
 
     # Create a cursor object to execute SQL queries
     cursor = connection.cursor()
 
+    # Create optional filter
+    position = (
+        f"position_applied = '{position}'" 
+        if position != "position_applied" 
+        else f"position_applied = {position}"
+    )
+    
+    region = (
+        f"region = '{region}'" 
+        if region != "region" 
+        else f"region = {region}"
+    )
+
+    dept = (
+        f"department = '{dept}'" 
+        if dept != "department" 
+        else f"department = {dept}"
+    )
+
     # Execute a SELECT query
     query = f"""
             SELECT name, gender, education, experience_level, strength, last_job,
             TIMESTAMPDIFF(MONTH, STR_TO_DATE(CONCAT(last_job_date, '-01'), '%Y-%m-%d'), NOW()) AS last_employed
             FROM candidates
+            WHERE {position} AND {region} AND {dept}
             LIMIT {k}
             """
     cursor.execute(query)

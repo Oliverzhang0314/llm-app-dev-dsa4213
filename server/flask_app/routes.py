@@ -62,10 +62,13 @@ def candidate_profile():
 
 #TODO: the recommendation feature 
 @app.route('/candidate/recommendation', methods=['GET'])
-def candidate_rank(limit=10):
+def candidate_rank():
     try:
-        limit = request.args.get('limit', limit)
-        return jsonify(candidates_table(limit))
+        position = request.args.get('position', "position_applied")
+        region = request.args.get('region', "region")
+        dept = request.args.get('dept', "department")
+        limit = request.args.get('limit', 10)
+        return jsonify(candidates_table(position, region, dept, limit))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
