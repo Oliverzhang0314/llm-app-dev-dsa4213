@@ -36,7 +36,11 @@ def upload_file():
 
     try:
         # rag_file_upload_service(filenames)
-        profile = create_profile()
+        position = request.form.get('position')
+        region = request.form.get('region')
+        department = request.form.get('department')
+
+        profile = create_profile(position, region, department)
         data={
             'status': 'File uploaded suceessfully',
             'data' : profile
@@ -68,12 +72,6 @@ def rag_summary():
         return response
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-#TODO: use pre-defined prompts to generate candidate profile and send to frontend to build dashboard 
-@app.route('/candidate/profile',methods=['GET','POST'])
-def candidate_profile():
-    
-    pass
  
 @app.route('/candidate/recommendation/table', methods=['GET'])
 def candidate_rank():

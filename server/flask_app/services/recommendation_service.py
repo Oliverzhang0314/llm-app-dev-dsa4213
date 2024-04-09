@@ -18,6 +18,7 @@ def connect_to_db():
     return connection
 
 def candidates_table(position, region, dept, k: int=10):
+
     # Connect to the MySQL database
     connection = connect_to_db()
 
@@ -43,18 +44,19 @@ def candidates_table(position, region, dept, k: int=10):
         else f"department = {dept}"
     )
 
+
     # Execute a SELECT query
     query = f"""
             SELECT 
-                name, 
-                gender, 
-                education, 
-                experience_level, 
-                strength, 
-                last_job,
+                candidate_name, 
+                candidate_gender, 
+                candidate_education, 
+                candidate_experience, 
+                candidate_strength, 
+                candidate_MostRecenJobTitle,
                 TIMESTAMPDIFF(
                     MONTH, 
-                    STR_TO_DATE(CONCAT(last_job_date, '-01'), '%Y-%m-%d'), 
+                    STR_TO_DATE(CONCAT(candidate_MostRescentJobTime, '-01'), '%Y-%m-%d'), 
                     NOW()
                 ) AS last_employed
             FROM candidates
@@ -104,12 +106,12 @@ def radar_plot(position, region, dept, k: int=4):
     # Execute a SELECT query
     query = f"""
             SELECT 
-                attitude,
-                adaptability,
-                collaboration,
-                communication,
-                ethics,
-                leadership,
+                candidate_workAttitude,
+                candidate_adaptability,
+                candidate_collaboration,
+                candidate_communication,
+                candidate_workEthics,
+                candidate_leaderShip,
                 (attitude + adaptability + collaboration + communication + ethics + leadership) AS total_score
             FROM candidates
             WHERE {position} AND {region} AND {dept}
