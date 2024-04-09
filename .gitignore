@@ -5,3 +5,11 @@ venv/
 .venv/
 .env/
 .DS_Store
+bin/
+lib/
+pyvenv.cfg
+project_templates/
+www/
+waved
+share/
+.env

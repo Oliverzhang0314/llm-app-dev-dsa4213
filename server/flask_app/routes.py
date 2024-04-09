@@ -74,8 +74,25 @@ def rag_summary():
 def candidate_profile():
     
     pass
-
-#TODO: the recommendation feature 
-@app.route('/candidate/recommendation', methods=['GET', 'POST'])
+ 
+@app.route('/candidate/recommendation/table', methods=['GET'])
 def candidate_rank():
-    pass
+    try:
+        position = request.args.get('position', "position_applied")
+        region = request.args.get('region', "region")
+        dept = request.args.get('dept', "department")
+        limit = request.args.get('limit', 10)
+        return jsonify(candidates_table(position, region, dept, limit))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/candidate/recommendation/radar-plot', methods=['GET'])
+def candidate_radar_plot():
+    try:
+        position = request.args.get('position', "position_applied")
+        region = request.args.get('region', "region")
+        dept = request.args.get('dept', "department")
+        limit = request.args.get('limit', 4)
+        return jsonify(radar_plot(position, region, dept, limit))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

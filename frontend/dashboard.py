@@ -1,24 +1,28 @@
 from h2o_wave import main, app, Q, ui
+from h2o_wave import data as da
+import os
+import os.path
 
 @app('/')
 async def serve(q: Q):
     q.page['meta'] = ui.meta_card(box='', layouts=[
         ui.layout(
-            breakpoint='xs',
+            breakpoint='m',
             #width='1200px',
 
             # Create zones for each divisions
-            zones=[
-                ui.zone('header', size='76px'),
-                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='105px'),
-                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='780px', justify='around',
-                        zones=[ui.zone('middle_left',direction=ui.ZoneDirection.COLUMN, 
-                                       zones=[ui.zone('ltop', size='40%'),
-                                              ui.zone('lbottom', size='40%')]),
-                               ui.zone('middle_right', size='75%',justify='between',direction=ui.ZoneDirection.COLUMN, 
+            zones=[ # 76, 105, 780
+                ui.zone('header', size='5%'),
+                ui.zone('filters', direction=ui.ZoneDirection.ROW, size='7%'),
+                ui.zone('middle', direction=ui.ZoneDirection.ROW, size='85%',
+                        zones=[ui.zone('middle_left',size='35%', direction=ui.ZoneDirection.COLUMN,
+                                       zones=[ui.zone('ltop', size='10%'),
+                                              ui.zone('lbottom', size='60%')]),
+                               ui.zone('middle_right', size='65%',direction=ui.ZoneDirection.COLUMN, 
                                        zones=[ui.zone('rtop'),
-                                              ui.zone('rbottom', size='50%')])]),
-                ui.zone('footer', size='80px')])
+                                              ui.zone('rmid', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
+                                              ui.zone('rbottom')])]),
+                ui.zone('footer', size='80px')]),
                 ],
         themes=[
             ui.theme(
@@ -36,19 +40,6 @@ async def serve(q: Q):
     q.page['header'] = ui.header_card(box='header', title='Resume Analysis', subtitle='DSA4213 Group Whisper',
                                     image='https://wave.h2o.ai/img/h2o-logo.svg')
     
-    '''
-    q.page['title'] = ui.section_card(
-        box='title',
-        title='Resume Analysis',
-        subtitle='Subtitle',
-        items=[
-            ui.toggle(name='search', label='sample term', value=True),
-            ui.dropdown(name='distribution', label='', value='option0', choices=[
-                ui.choice(name=f'option{i}', label='sample term') for i in range(5)
-            ]),
-            ui.date_picker(name='target_date', label='', value='2020-12-25'),
-        ])
-    '''
     
     # Create filters
     q.page['filter1'] = ui.form_card(
@@ -89,8 +80,117 @@ async def serve(q: Q):
  
 ])
     
+    # Re-create table title:
+
+    q.page['tb_title'] = ui.form_card(
+        box= ui.box(zone='rtop', size='0'),
+        items=[
+            ui.text_l('| Top 4 Candidate Recommendation'),
+        ],
+    )
+    
     # Create table title
-    q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
+    #q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
+
+    q.page['top1Radar'] = ui.plot_card(
+        box = ui.box('rmid'),
+        title ='Radar Plot',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 8),
+            ('Adaptability', 9),
+            ('Collaboration', 9),
+            ('Communication', 8),
+            ('Work Ethics', 9.3),
+            ('Leadership', 9.3),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top2Radar'] = ui.plot_card(
+        box = ui.box('rmid'),
+        title ='Candidate2',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 7),
+            ('Adaptability', 9),
+            ('Collaboration', 6.8),
+            ('Communication', 7),
+            ('Work Ethics', 9),
+            ('Leadership', 5),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top3Radar'] = ui.plot_card(
+        box = ui.box('rmid'),
+        title ='Candidate3',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 6),
+            ('Adaptability', 6),
+            ('Collaboration', 5),
+            ('Communication', 4),
+            ('Work Ethics', 9.3),
+            ('Leadership', 6),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
+
+    q.page['top4Radar'] = ui.plot_card(
+        box = ui.box('rmid'),
+        title ='Candidate4',
+        data = da('Metrics Score', 6, rows=[
+            ('Work Attitude', 6),
+            ('Adaptability', 6),
+            ('Collaboration', 5),
+            ('Communication', 4),
+            ('Work Ethics', 7),
+            ('Leadership', 6),
+        ]),
+        plot=ui.plot([
+        ui.mark(
+                coord='polar',
+                type='interval',
+                x='=Metrics',
+                y='=Score',
+                color='=Metrics',
+                stack='auto',
+                y_min=0,
+                stroke_color='$card'
+            )
+        ]),
+    )
 
     # Table content
     names = ['name','exp','education','strength','rjt','trjt','resume']
@@ -103,11 +203,11 @@ async def serve(q: Q):
         columns=[
             ui.table_column(name=names[0], label=labels[0]),
             ui.table_column(name=names[1], label=labels[1], filterable=True),
-            ui.table_column(name=names[2], label=labels[2]),
-            ui.table_column(name=names[3], label=labels[3]),
-            ui.table_column(name=names[4], label=labels[4]),
-            ui.table_column(name=names[5], label=labels[5]),
-            ui.table_column(name=names[6], label=labels[6])
+            ui.table_column(name=names[2], label=labels[2], filterable=True),
+            ui.table_column(name=names[3], label=labels[3], filterable=True),
+            ui.table_column(name=names[4], label=labels[4], filterable=True),
+            ui.table_column(name=names[5], label=labels[5], filterable=True),
+            ui.table_column(name=names[6], label=labels[6], filterable=True)
             ],
         rows=[
             ui.table_row(name='row1', cells=['John','1']),
@@ -128,5 +228,45 @@ async def serve(q: Q):
         ui.pie(label='2-4 years', value='25%', fraction=0.25, color='pink'),
         ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
 ])
+    # Upload button
+    links = q.args.user_files
+    if links:
+        items = [ui.text_xl('Files uploaded!')]
+        for link in links:
+            local_path = await q.site.download(link, '.')
+            #
+            # The file is now available locally; process the file.
+            # To keep this example simple, we just read the file size.
+            #
+            size = os.path.getsize(local_path)
+
+            items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
+            # Clean up
+            os.remove(local_path)
+
+        items.append(ui.button(name='back', label='Back', primary=True))
+        q.page['Upload'].items = items
+    else:
+        q.page['Upload'] = ui.form_card(box='lbottom', items=[
+            ui.text_xl('Upload candidate resume files here'),
+            ui.file_upload(name='user_files', label='Upload', multiple=True),
+        ])
+
+    # Chat Bot
+    q.page['chat_bot'] = ui.chatbot_card(
+        box='rbottom',
+        name='chatbot', 
+        data=da(fields='content from_user', t='list', rows=[
+            ['Hello. Can you help me analyze technical skills of Alice?', True],
+            ['Sure!', False],
+        ]),
+        events=['scroll']
+        )   
+    
+    # Download link or results
+    download_path = "" #await q.site.upload(['results.csv'])
+    q.page['download'] = ui.form_card(box='lbottom', items = [
+        ui.link(label='Download Results', path=download_path, download=True),
+    ])
     await q.page.save()
 
