@@ -36,7 +36,7 @@ def rag_file_upload_service(filenames:list, client=client, collection_id=collect
     client.ingest_uploads(collection_id, upload_files)
 
 
-def rag_summary_service(filenames, client=client, collection_id=collection_id):
+def rag_summary_service(client=client, collection_id=collection_id):
     """generate summary of each documents by h2ogpt 
 
     Args:
@@ -47,20 +47,9 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
     Returns:
         list: summaries to documents
     """
-    
-    upload_files=[]
-    
-    for filename in filenames:  
-        with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
-            upload_files.append(client.upload(os.path.join(app.config['UPLOAD_FOLDER'], filename), f))
-    print(upload_files)
-
-    # Ingest documents (Creates previews, chunks and embeddings)
-    client.ingest_uploads(collection_id, upload_files)
 
     # Create a chat session
     chat_session_id = client.create_chat_session_on_default_collection()
-
     
     # Summarize each document
     summaries = []
@@ -75,7 +64,7 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
     return summaries
 
     
-def rag_query_service(filenames, queries, client=client, collection_id=collection_id):
+def rag_query_service(queries:list, client=client, collection_id=collection_id):
     """ This method is used to genenrate replies to queries by h20gpt 
 
     Args:
@@ -87,17 +76,9 @@ def rag_query_service(filenames, queries, client=client, collection_id=collectio
     Returns:
         dict: an hashmap of replies corresponding to each queries
     """
-        
-    upload_files=[]
-    for filename in filenames:
-        with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
-            upload_files.append(client.upload(os.path.join(app.config['UPLOAD_FOLDER'], filename), f))
-
-    # Ingest documents (Creates previews, chunks and embeddings)
-    client.ingest_uploads(collection_id, upload_files)
 
     # Create a chat session
-    chat_session_id = client.create_chat_session(collection_id)
+    chat_session_id = client.create_chat_session_on_default_collection()
 
     # Query the collection
     replies={}
@@ -107,6 +88,6 @@ def rag_query_service(filenames, queries, client=client, collection_id=collectio
                 q,
                 timeout=60,
             )
-            replies[q] = reply
+            replies[q] = reply.content
     
     return replies
