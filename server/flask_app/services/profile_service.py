@@ -2,12 +2,19 @@ from flask import current_app as app
 from .rag_service import rag_query_service
 import pymysql.cursors
 import json
+from dotenv import load_dotenv
+import os
+import re
+
+# Load environment variables from the .env file
+load_dotenv(os.path.join("..", "..", "..", ".env"))
 
 connection = pymysql.connect(
-    host=app.config['MYSQL_HOST'],
-    user=app.config['MYSQL_USER'],
-    password=app.config['MYSQL_PASSWORD'],
-    database=app.config['MYSQL_DB'],
+     host=os.getenv("MYSQL_HOST"),
+    user=os.getenv("MYSQL_USER"),
+    password=os.getenv("MYSQL_PASSWORD"),
+    database=os.getenv("MYSQL_DB"),
+    port=int(os.getenv("MYSQL_PORT")),
     cursorclass=pymysql.cursors.DictCursor
 )
 
@@ -27,24 +34,31 @@ def create_profile(position:str, region:str, department:str):
         Please give me the following information in a json format: \
         candidate's name (NaN if not specified) as candidateName, \
         candidate's gender (NaN if not specified) as candidateGender, \
-        candidate's experience score related to the positon: {position}, with an int ranging from 1-10 as candidateExperience, \
+        candidate's experience score related to the position: {position}, with an int ranging from 1-10 as candidateExperience, \
         candidate's most recent job title as candidateMostRecentJobTitle, \
         candidate's highest education certificate as candidateEducation, \
         candidate's best technical strength in one word as candidateStrength, \
         candidate's most recent job ending time as candidateMostRecentJobTime, \
         candidate's workAttitude score with a float ranging from 1-10 as candidateWorkAttitude, \
-        candidate's adaptability score with a float ranging from 1-10 as candiateAdaptability, \
-        candidate's collaoration score with a float ranging from 1-10 as candidateCollaboration, \
+        candidate's adaptability score with a float ranging from 1-10 as candidateAdaptability, \
+        candidate's collaboration score with a float ranging from 1-10 as candidateCollaboration, \
         candidate's communication score with a float ranging from 1-10 as candidateCommunication, \
         candidate's workEthics score with a float ranging from 1-10 as candiateWorkEthics, \
-        candidate's leaderShip socre with a float ranging from 1-10 as candidateLeadership. \
+        candidate's leaderShip score with a float ranging from 1-10 as candidateLeadership. \
         "
     ]
     # use predefined prompts to query LLM
     replies = rag_query_service(prompts)
 
+    # Use regex to extract JSON information
+    json_data = re.search(r'{.*}', replies[prompts[0]].replace("\n", ""))
+    if json_data:
+        json_data = json_data.group()
+    else:
+        raise ValueError("No JSON data extracted from the replied natural language sentence")
+
     # parse the replied natural language sentences to structured data
-    profile = json.loads(replies[prompts[0]])
+    profile = json.loads(json_data)
 
     # store the extracted data in database
     

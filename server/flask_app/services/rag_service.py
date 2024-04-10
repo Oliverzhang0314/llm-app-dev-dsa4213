@@ -84,10 +84,20 @@ def rag_query_service(queries:list, client=client, collection_id=collection_id):
     replies={}
     with client.connect(chat_session_id) as session:
         for q in queries:
-            reply = session.query(
-                q,
-                timeout=60,
-            )
-            replies[q] = reply.content
+            i = 0
+            while True:
+                try:
+                    reply = session.query(
+                        q,
+                        timeout=100,
+                    )
+                    replies[q] = reply.content
+                    break
+                except TimeoutError:
+                    i+=1
+                    if i == 3:
+                        replies[q] = "Timed out after 3 attempts. Please try again later."
+                        break
+                    continue
     
     return replies
