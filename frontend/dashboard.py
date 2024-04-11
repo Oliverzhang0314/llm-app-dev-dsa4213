@@ -1,7 +1,12 @@
 from h2o_wave import main, app, Q, ui
 from h2o_wave import data as da
+from chatbot import *
 import os
 import os.path
+import asyncio
+
+prev_messages = [{'content': f'Message {i}', 'from_user': i % 2 == 0} for i in range(100)]
+LOAD_SIZE = 10
 
 @app('/')
 async def serve(q: Q):
@@ -41,7 +46,7 @@ async def serve(q: Q):
                                     image='https://wave.h2o.ai/img/h2o-logo.svg')
     
     
-    # Create filters
+    ### Create filters ###
     q.page['filter1'] = ui.form_card(
         box=ui.box('filters'),
         items=[
@@ -67,7 +72,7 @@ async def serve(q: Q):
                 ui.choice(name='department_2', label='Department 2'),
                 ui.choice(name='department_3', label='Department 3')
     ])])
-
+    ################ 
 
     # Create KPI Card
     q.page['kpi'] = ui.form_card(box=ui.box('ltop'), items=[
@@ -252,16 +257,48 @@ async def serve(q: Q):
             ui.file_upload(name='user_files', label='Upload', multiple=True),
         ])
 
-    # Chat Bot
+    ### Chat Bot ###
+    q.client.current_load_page = len(prev_messages)
     q.page['chat_bot'] = ui.chatbot_card(
         box='rbottom',
         name='chatbot', 
         data=da(fields='content from_user', t='list', rows=[
-            ['Hello. Can you help me analyze technical skills of Alice?', True],
-            ['Sure!', False],
+                ['Hello', True],
+                ['Hi', False],
+                ['Hello', True],
+                ['Hi', False],
+                ['Hello', True],
+                ['Hi', False],
+                ['Hello', True],
+                ['Hi', False],
         ]),
-        events=['scroll']
+        events=['scroll_up'],
+        placeholder='Ask me anything...',
         )   
+
+    # New message
+    if q.args.chatbot:
+        # If user message:
+        q.page['chat_bot'].data += [q.args.chatbot, True]
+        # If bot message:
+        q.page['chat_bot'].data += ['', False]
+        
+        # Stream bot response.
+        q.client.task = asyncio.create_task(stream_chatbot_response(q.args.chatbot, q))
+        await q.page.save()
+    
+    # User scroll up to see chat history
+    if q.events.chatbot and q.events.chatbot.scroll_up:
+        if q.client.current_load_page == 0:
+            # If we reached the end, signal it to Wave by setting prev_items to empty list.
+            q.page['chat_bot'].prev_items = []
+        else:
+            end = q.client.current_load_page - LOAD_SIZE
+            q.page['chat_bot'].prev_items = prev_messages[end:q.client.current_load_page]
+            q.client.current_load_page = end
+            await q.sleep(0.5)  # Simulate network latency.
+
+    ################
     
     # Download link or results
     download_path = "" #await q.site.upload(['results.csv'])
