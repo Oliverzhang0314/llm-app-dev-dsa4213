@@ -23,18 +23,7 @@ collection_id = default_collection.id
 #     description='ResumeAnalysis',
 # )
 
-
-def rag_summary_service(filenames, client=client, collection_id=collection_id):
-    """generate summary of each documents by h2ogpt 
-
-    Args:
-        filenames (list): uploaded files
-        client (_type_, optional): h2ogpt client. Defaults to client.
-        collection_id (_type_, optional): h2ogpt collection_id. Defaults to collection_id.
-
-    Returns:
-        list: summaries to documents
-    """
+def rag_file_upload_service(filenames:list, client=client, collection_id=collection_id):
     
     upload_files=[]
     
@@ -46,9 +35,21 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
     # Ingest documents (Creates previews, chunks and embeddings)
     client.ingest_uploads(collection_id, upload_files)
 
-    # Create a chat session
-    chat_session_id = client.create_chat_session(collection_id)
 
+def rag_summary_service(client=client, collection_id=collection_id):
+    """generate summary of each documents by h2ogpt 
+
+    Args:
+        filenames (list): uploaded files
+        client (_type_, optional): h2ogpt client. Defaults to client.
+        collection_id (_type_, optional): h2ogpt collection_id. Defaults to collection_id.
+
+    Returns:
+        list: summaries to documents
+    """
+
+    # Create a chat session
+    chat_session_id = client.create_chat_session_on_default_collection()
     
     # Summarize each document
     summaries = []
@@ -58,12 +59,12 @@ def rag_summary_service(filenames, client=client, collection_id=collection_id):
             document_id=doc.id,
             timeout=60,
         )
-        summaries.append(summary)
+        summaries.append(summary.content)
     
     return summaries
 
     
-def rag_query_service(filenames, queries, client=client, collection_id=collection_id):
+def rag_query_service(queries:list, client=client, collection_id=collection_id):
     """ This method is used to genenrate replies to queries by h20gpt 
 
     Args:
@@ -75,26 +76,28 @@ def rag_query_service(filenames, queries, client=client, collection_id=collectio
     Returns:
         dict: an hashmap of replies corresponding to each queries
     """
-        
-    upload_files=[]
-    for filename in filenames:
-        with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
-            upload_files.append(client.upload(os.path.join(app.config['UPLOAD_FOLDER'], filename), f))
-
-    # Ingest documents (Creates previews, chunks and embeddings)
-    client.ingest_uploads(collection_id, upload_files)
 
     # Create a chat session
-    chat_session_id = client.create_chat_session(collection_id)
+    chat_session_id = client.create_chat_session_on_default_collection()
 
     # Query the collection
     replies={}
     with client.connect(chat_session_id) as session:
         for q in queries:
-            reply = session.query(
-                q,
-                timeout=60,
-            )
-            replies[q] = reply
+            i = 0
+            while True:
+                try:
+                    reply = session.query(
+                        q,
+                        timeout=100,
+                    )
+                    replies[q] = reply.content
+                    break
+                except TimeoutError:
+                    i+=1
+                    if i == 3:
+                        replies[q] = "Timed out after 3 attempts. Please try again later."
+                        break
+                    continue
     
     return replies

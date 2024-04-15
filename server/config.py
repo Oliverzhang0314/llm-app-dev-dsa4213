@@ -8,7 +8,7 @@ class Config:
     H2O_ADDRESS = 'https://h2ogpte.genai.h2o.ai'
     UPLOAD_FOLDER = './docs'
 
-    MYSQL_HOST = 'localhost:3306'
+    MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
-    MYSQL_PASSWORD = 'passwd'
+    MYSQL_PASSWORD = 'wang20020723'
     MYSQL_DB = 'dsa4213'
