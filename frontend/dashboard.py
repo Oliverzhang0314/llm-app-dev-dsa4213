@@ -4,6 +4,8 @@ from chatbot import *
 import os
 import os.path
 import asyncio
+import requests
+import json
 
 prev_messages = [{'content': f'Message {i}', 'from_user': i % 2 == 0} for i in range(100)]
 radar_data = []
@@ -104,105 +106,35 @@ async def serve(q: Q):
         )
 
         # Create Radar plots
-        q.page['top1Radar'] = ui.plot_card(
-            box = ui.box('rmid'),
-            title ='Candidate 1',
-            data = da('Metrics Score', 6, rows=[
-                ('Work Attitude', 8),
-                ('Adaptability', 9),
-                ('Collaboration', 9),
-                ('Communication', 8),
-                ('Work Ethics', 9.3),
-                ('Leadership', 9.3),
-            ]),
-            plot=ui.plot([
-            ui.mark(
-                    coord='polar',
-                    type='interval',
-                    x='=Metrics',
-                    y='=Score',
-                    color='=Metrics',
-                    stack='auto',
-                    y_min=0,
-                    stroke_color='$card'
-                )
-            ]),
+        radar_data = json.loads(
+            requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()
         )
 
-        q.page['top2Radar'] = ui.plot_card(
-            box = ui.box('rmid'),
-            title ='Candidate 2',
-            data = da('Metrics Score', 6, rows=[
-                ('Work Attitude', 7),
-                ('Adaptability', 9),
-                ('Collaboration', 6.8),
-                ('Communication', 7),
-                ('Work Ethics', 9),
-                ('Leadership', 5),
-            ]),
-            plot=ui.plot([
-            ui.mark(
-                    coord='polar',
-                    type='interval',
-                    x='=Metrics',
-                    y='=Score',
-                    color='=Metrics',
-                    stack='auto',
-                    y_min=0,
-                    stroke_color='$card'
-                )
-            ]),
-        )
-
-        q.page['top3Radar'] = ui.plot_card(
-            box = ui.box('rmid'),
-            title ='Candidate 3',
-            data = da('Metrics Score', 6, rows=[
-                ('Work Attitude', 6),
-                ('Adaptability', 6),
-                ('Collaboration', 5),
-                ('Communication', 4),
-                ('Work Ethics', 9.3),
-                ('Leadership', 6),
-            ]),
-            plot=ui.plot([
-            ui.mark(
-                    coord='polar',
-                    type='interval',
-                    x='=Metrics',
-                    y='=Score',
-                    color='=Metrics',
-                    stack='auto',
-                    y_min=0,
-                    stroke_color='$card'
-                )
-            ]),
-        )
-
-        q.page['top4Radar'] = ui.plot_card(
-            box = ui.box('rmid'),
-            title ='Candidate 4',
-            data = da('Metrics Score', 6, rows=[
-                ('Work Attitude', 6),
-                ('Adaptability', 6),
-                ('Collaboration', 5),
-                ('Communication', 4),
-                ('Work Ethics', 7),
-                ('Leadership', 6),
-            ]),
-            plot=ui.plot([
-            ui.mark(
-                    coord='polar',
-                    type='interval',
-                    x='=Metrics',
-                    y='=Score',
-                    color='=Metrics',
-                    stack='auto',
-                    y_min=0,
-                    stroke_color='$card'
-                )
-            ]),
-        )
+        for i in range(1, n_top_candidates+1):
+            q.page[f"top{i}Radar"] = ui.plot_card(
+                box = ui.box('rmid'),
+                title = f"Candidate {i}",
+                data = da('Metrics Score', 6, rows=[
+                    ('Work Attitude', radar_data[i-1]['candidate_workAttitude']),
+                    ('Adaptability', radar_data[i-1]['candidate_adaptability']),
+                    ('Collaboration', radar_data[i-1]['candidate_collaboration']),
+                    ('Communication', radar_data[i-1]['candidate_communication']),
+                    ('Work Ethics', radar_data[i-1]['candidate_workEthics']),
+                    ('Leadership', radar_data[i-1]['candidate_leaderShip']),
+                ]),
+                plot=ui.plot([
+                ui.mark(
+                        coord='polar',
+                        type='interval',
+                        x='=Metrics',
+                        y='=Score',
+                        color='=Metrics',
+                        stack='auto',
+                        y_min=0,
+                        stroke_color='$card'
+                    )
+                ]),
+            )
 
         # Table content
         names = ['name','exp','education','strength','rjt','trjt','resume']
