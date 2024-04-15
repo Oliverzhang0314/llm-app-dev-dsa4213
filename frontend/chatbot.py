@@ -1,5 +1,6 @@
 from h2o_wave import Q
 import asyncio
+import requests
 
 async def stream_chatbot_response(user_input: str, q: Q):
     stream = ''
@@ -12,5 +13,5 @@ async def stream_chatbot_response(user_input: str, q: Q):
 
 def retrieve_chatbot_response(user_input: str):
     # send to LLM backend, for now itll be placehold text
-    bot_response = "I am a fake chatbot. Sorry, I cannot help you."
+    bot_response = requests.post('http://localhost:4000/rag/query', json={'queries': [user_input]}).json()['replies'][user_input]
     return bot_response
