@@ -137,32 +137,23 @@ async def serve(q: Q):
             )
 
         # Table content
-        names = ['name','exp','education','strength','rjt','trjt','resume']
-        labels = ['Name','Experience Level(Yr)','Education','Strength','Most Rec Job','Unemployed Duration(M)','Resume']
-        data = []
+        labels = {
+            'Name' : "candidate_name",
+            'Experience Level(Yr)' : 'candidate_experience',
+            'Education' : 'candidate_education',
+            'Strength' : 'candidate_strength',
+            'Most Rec Job' : 'candidate_MostRecenJobTitle',
+            'Unemployed Duration(M)' : 'last_employed',
+        }
+        data = json.loads(
+            requests.get('http://localhost:4000/candidate/recommendation/table').json()
+        )
 
         q.page['table'] = ui.form_card(box='rbottom', items=[
         ui.table(
             name='table',
-            columns=[
-                ui.table_column(name=names[0], label=labels[0]),
-                ui.table_column(name=names[1], label=labels[1], filterable=True),
-                ui.table_column(name=names[2], label=labels[2], filterable=True),
-                ui.table_column(name=names[3], label=labels[3], filterable=True),
-                ui.table_column(name=names[4], label=labels[4], filterable=True),
-                ui.table_column(name=names[5], label=labels[5], filterable=True),
-                ui.table_column(name=names[6], label=labels[6], filterable=True)
-                ],
-            rows=[
-                ui.table_row(name='row1', cells=['John','1']),
-                ui.table_row(name='row2', cells=['Alice','0.5']),
-                ui.table_row(name='row3', cells=['Bob','2']),
-                ui.table_row(name='row4', cells=['John','1']),
-                ui.table_row(name='row5', cells=['Alice','2']),
-                ui.table_row(name='row6', cells=['Bob','2']),
-                ui.table_row(name='row7', cells=['John','1']),
-                ui.table_row(name='row8', cells=['Alice','1']),
-            ],
+            columns=[ui.table_column(name=n, label=l) for l, n in labels.items()],
+            rows=[ui.table_row(name=f'row{i}', cells=[str(row[label]) for label in labels.values()]) for i, row in enumerate(data)],
         )
     ])
         
