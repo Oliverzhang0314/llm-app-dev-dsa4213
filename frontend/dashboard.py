@@ -8,6 +8,7 @@ import asyncio
 prev_messages = [{'content': f'Message {i}', 'from_user': i % 2 == 0} for i in range(100)]
 radar_data = []
 LOAD_SIZE = 10
+n_top_candidates = 4
 
 @app('/')
 async def serve(q: Q):
@@ -94,18 +95,15 @@ async def serve(q: Q):
     
     ])
         
-        # Re-create table title:
-
+        # Create table title:
         q.page['tb_title'] = ui.form_card(
             box= ui.box(zone='rtop', size='0'),
             items=[
                 ui.text_l('| Top 4 Candidate Recommendation'),
             ],
         )
-        
-        # Create table title
-        #q.page['tb_title'] = ui.header_card(box=('rtop'), subtitle='', title='| Top 4 Candidate Recommendation', color='card')
 
+        # Create Radar plots
         q.page['top1Radar'] = ui.plot_card(
             box = ui.box('rmid'),
             title ='Candidate 1',
@@ -295,9 +293,37 @@ async def serve(q: Q):
 
     else:
         ### Filters #### 
-        if q.args.open_positions:
-            # TODO: get frontend extraction of filters working
-            pass
+        if q.args.chatbot: # TODO: get frontend extraction of filters working
+            # FOR NOW WE SIMULATE NEW DATA
+            for i in range(1, n_top_candidates+1): # removal of existing radar plots
+                del q.page[''.join(['top', str(i), 'Radar'])]
+
+            # TODO: extract data for new radar plots
+            for i in range(1, n_top_candidates+1): # plot new radar plots
+                q.page[''.join(['top', str(i), 'Radar'])] = ui.plot_card(
+                    box = ui.box('rmid'),
+                    title = ''.join(['Candidate', str(i)]),
+                    data = da('Metrics Score', 6, rows=[
+                        ('Work Attitude', 1),
+                        ('Adaptability', 1),
+                        ('Collaboration', 1),
+                        ('Communication', 1),
+                        ('Work Ethics', 3),
+                        ('Leadership', 3),
+                    ]),
+                    plot=ui.plot([
+                    ui.mark(
+                            coord='polar',
+                            type='interval',
+                            x='=Metrics',
+                            y='=Score',
+                            color='=Metrics',
+                            stack='auto',
+                            y_min=0,
+                            stroke_color='$card'
+                        )
+                    ]),
+                )
         ################
 
         ### Chat Bot ### 
