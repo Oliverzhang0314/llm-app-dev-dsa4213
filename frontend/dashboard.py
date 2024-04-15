@@ -137,6 +137,8 @@ async def serve(q: Q):
             )
 
         # Table content
+        ## NOTE: only modify this to add columns. 
+        ## key is UI column name, value is db column name
         labels = {
             'Name' : "candidate_name",
             'Experience Level(Yr)' : 'candidate_experience',
