@@ -133,3 +133,53 @@ def radar_plot(position, region, dept, k: int=4):
     cursor.close()
     connection.close()
     return df.to_json(orient="records", index=False)
+
+def experience_distribution(position, region, dept):
+    # Connect to the MySQL database
+    connection = connect_to_db()
+
+    # Create a cursor object to execute SQL queries
+    cursor = connection.cursor()
+
+    # Create optional filter
+    position = (
+        f"position_applied = '{position}'" 
+        if position != "position_applied" 
+        else f"position_applied = {position}"
+    )
+    
+    region = (
+        f"region = '{region}'" 
+        if region != "region" 
+        else f"region = {region}"
+    )
+
+    dept = (
+        f"department = '{dept}'" 
+        if dept != "department" 
+        else f"department = {dept}"
+    )
+
+    # Execute a SELECT query
+    query = f"""
+            SELECT 
+                candidate_experience,
+                COUNT(*) AS count
+            FROM candidates
+            WHERE {position} AND {region} AND {dept}
+            GROUP BY candidate_experience
+            """
+    
+    cursor.execute(query)
+
+    # Get column names
+    field_names = [i[0] for i in cursor.description]
+    
+    # Fetch all the rows returned by the query
+    rows = cursor.fetchall()    
+    df = pd.DataFrame(rows, columns=field_names)
+
+    # Close the cursor and the database connection
+    cursor.close()
+    connection.close()
+    return df.to_json(orient="records", index=False)
