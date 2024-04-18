@@ -27,10 +27,6 @@ This project was brought to life by the collaborative efforts of the following t
 
 We appreciate the dedication and expertise of each team member in making this project a success!
 
-
-We appreciate the dedication and expertise of each team member in making this project a success!
-
-
 ## Key Features
 
 **Seamless Resume Parsing**: Empowered by H2O, our system effortlessly parses resumes of diverse formats including:
