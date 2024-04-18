@@ -188,6 +188,17 @@ async def serve(q: Q):
                 ui.text_xl('Upload candidate resume files here'),
                 ui.file_upload(name='user_files', label='Upload', multiple=True),
             ])
+            links = q.args.user_files
+            items = [ui.text_xl('Files uploaded!')]
+            for link in links:
+                local_path = await q.site.download(link, '.')
+                size = os.path.getsize(local_path)
+                items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
+                # Clean up
+                os.remove(local_path)
+            items.append(ui.button(name='back', label='Back', primary=True))
+            q.page['Upload'].items = items
+        await q.page.save()
 
         ### Chat Bot ###
         q.client.current_load_page = len(prev_messages)
