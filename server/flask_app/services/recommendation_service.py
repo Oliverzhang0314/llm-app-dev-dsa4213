@@ -3,17 +3,19 @@ import mysql.connector
 from dotenv import load_dotenv
 import pandas as pd
 from datetime import datetime
+from flask import current_app as app, jsonify, request
+
 
 # Load environment variables from the .env file
 load_dotenv(os.path.join("..", "..", "..", ".env"))
 
 def connect_to_db():
     connection = mysql.connector.connect(
-        host=os.getenv("MYSQL_HOST"),
-        user=os.getenv("MYSQL_USER"),
-        password=os.getenv("MYSQL_PASSWORD"),
-        database=os.getenv("MYSQL_DB"),
-        port=os.getenv("MYSQL_PORT")
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DB'],
+        # port=app.config['MYSQL_PORT']
     )
     return connection
 

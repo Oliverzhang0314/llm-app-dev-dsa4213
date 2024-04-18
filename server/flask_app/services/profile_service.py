@@ -1,6 +1,6 @@
 from flask import current_app as app
 from .rag_service import rag_query_service
-import pymysql.cursors
+import mysql.connector
 import json
 from dotenv import load_dotenv
 import os
@@ -9,26 +9,24 @@ import re
 # Load environment variables from the .env file
 load_dotenv(os.path.join("..", "..", "..", ".env"))
 
-connection = pymysql.connect(
-     host=os.getenv("MYSQL_HOST"),
-    user=os.getenv("MYSQL_USER"),
-    password=os.getenv("MYSQL_PASSWORD"),
-    database=os.getenv("MYSQL_DB"),
-    port=int(os.getenv("MYSQL_PORT")),
-    cursorclass=pymysql.cursors.DictCursor
-)
+def connect_to_db():
+    connection = mysql.connector.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DB'],
+        # port=app.config['MYSQL_PORT']
+    )
+    return connection
 
-#TODO: design prompt to generate useful results
+def create_profile(filenames:list, position:str, region:str, department:str):
 
-def create_profile(position:str, region:str, department:str):
-    """_summary_
+    # Connect to the MySQL database
+    connection = connect_to_db()
 
-    Args:
-\        prompts (list, optional): pre-defined prompts. Defaults to prompts.
+    # Create a cursor object to execute SQL queries
+    cursor = connection.cursor()
 
-    Returns:
-        dict: a hash table with candidates and their corresponding profile data
-    """
     prompts = [
         f" \
         Please give me the following information in a json format: \
@@ -48,7 +46,7 @@ def create_profile(position:str, region:str, department:str):
         "
     ]
     # use predefined prompts to query LLM
-    replies = rag_query_service(prompts)
+    replies = rag_query_service(filenames, prompts)
 
     # Use regex to extract JSON information
     json_data = re.search(r'{.*}', replies[prompts[0]].replace("\n", ""))
@@ -61,10 +59,7 @@ def create_profile(position:str, region:str, department:str):
     profile = json.loads(json_data)
 
     # store the extracted data in database
-    
-    with connection:
-        with connection.cursor() as cursor:
-            sql = """INSERT INTO candidates 
+    sql = """INSERT INTO candidates 
             (candidate_name, 
             candidate_gender,
             candidate_experience, 
@@ -83,30 +78,28 @@ def create_profile(position:str, region:str, department:str):
             department) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             
-            cursor.execute(sql, 
-            (profile.get('candidateName'), 
-            profile.get('candidateGender'),
-            profile.get('candidateExperience'), 
-            profile.get('candidateMostRecentJobTitle'), 
-            profile.get('candidateEducation'), 
-            profile.get("candidateStrength"), 
-            profile.get("candidateMostRecentJobTime"), 
-            profile.get("candidateWorkAttitude"), 
-            profile.get("candidateAdaptability"), 
-            profile.get("candidateCollaboration"), 
-            profile.get("candidateCommunication"),
-            profile.get("candidateWorkEthics"), 
-            profile.get("candidateLeadership"), 
-            position, 
-            region, 
-            department))
+    cursor.execute(
+        sql, 
+        (profile.get('candidateName'), 
+        profile.get('candidateGender'),
+        profile.get('candidateExperience'), 
+        profile.get('candidateMostRecentJobTitle'), 
+        profile.get('candidateEducation'), 
+        profile.get("candidateStrength"), 
+        profile.get("candidateMostRecentJobTime"), 
+        profile.get("candidateWorkAttitude"), 
+        profile.get("candidateAdaptability"), 
+        profile.get("candidateCollaboration"), 
+        profile.get("candidateCommunication"),
+        profile.get("candidateWorkEthics"), 
+        profile.get("candidateLeadership"), 
+        position, 
+        region, 
+        department))
 
-            connection.commit()
-
+    connection.commit()
+    cursor.close()
+    connection.close()
+    
     return profile
 
-def retrive_profile():
-
-    with connection:
-        with connection.cursor() as cursor:
-            sql = ""

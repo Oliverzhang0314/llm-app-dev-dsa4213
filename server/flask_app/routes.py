@@ -10,6 +10,7 @@ from .services.profile_service import *
 @app.route('/')
 def index():
     return "welcome to flask server"
+
 @app.route('/file/upload', methods=['GET','POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -35,12 +36,13 @@ def upload_file():
                 return jsonify({'error': str(e)}), 500
 
     try:
-        # rag_file_upload_service(filenames)
+        # parese reqeust to get arguments
         position = request.form.get('position')
         region = request.form.get('region')
         department = request.form.get('department')
-
-        profile = create_profile(position, region, department)
+        
+        # generate candidate profile
+        profile = create_profile(filenames, position, region, department)
         data={
             'status': 'File uploaded suceessfully',
             'data' : profile
@@ -50,7 +52,6 @@ def upload_file():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-#TODO: create rag_query api by using rag_query_service
 @app.route('/rag/query', methods=['GET','POST'])
 def rag_query():
     try:
