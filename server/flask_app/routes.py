@@ -95,3 +95,13 @@ def candidate_radar_plot():
         return jsonify(radar_plot(position, region, dept, limit))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/candidate/experience-levels', methods=['GET'])
+def candidate_experience_distribution():
+    try:
+        position = request.args.get('position', "position_applied")
+        region = request.args.get('region', "region")
+        dept = request.args.get('dept', "department")
+        return jsonify(experience_distribution(position, region, dept))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
