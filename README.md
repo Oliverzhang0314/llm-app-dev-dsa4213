@@ -29,13 +29,7 @@ We appreciate the dedication and expertise of each team member in making this pr
 
 ## Key Features
 
-- **Seamless Resume Parsing**: Empowered by H2O, our system effortlessly parses resumes of diverse formats including:
-- DOC
-- DOCX
-- PDF
-- TXT
-- HTML
-
+- **Seamless Resume Parsing**: Empowered by H2O, our system effortlessly parses resumes of diverse formats including: DOC, DOCX, PDF, HTML and etc.
 
 - **LLMs and Prompt Engineering**: We utilize H2O.ai's powerful LLM platform h20eGPT, to analyze and extract meaningful patterns from the HR data. These models are trained to predict candidate suitability for specific roles based on historical data and relevant features.
 
@@ -76,9 +70,3 @@ Once the installation is complete and the system is configured, you can use the 
 ## License
 
 Our HR Insights Dashboard with Candidates Recommendation project is licensed under the [MIT License](LICENSE.md). Feel free to use, modify, and distribute the code for both commercial and non-commercial purposes, with appropriate attribution.
-
-
-
-
-
-
