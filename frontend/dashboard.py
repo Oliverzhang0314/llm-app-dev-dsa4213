@@ -27,7 +27,7 @@ async def serve(q: Q):
                     ui.zone('middle', direction=ui.ZoneDirection.ROW, size='85%',
                             zones=[ui.zone('middle_left',size='35%', direction=ui.ZoneDirection.COLUMN,
                                         zones=[ui.zone('ltop', size='10%'),
-                                                ui.zone('lbottom', size='60%')]),
+                                                ui.zone('lbottom', size='79%')]),
                                 ui.zone('middle_right', size='65%',direction=ui.ZoneDirection.COLUMN, 
                                         zones=[ui.zone('rtop'),
                                                 ui.zone('rmid', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
@@ -56,26 +56,26 @@ async def serve(q: Q):
             box='filters',
             items=[
                 ui.dropdown(name='open_positions', label='Open Positions', choices=[
-                    ui.choice(name='position_1', label='Position 1'),
-                    ui.choice(name='position_2', label='Position 2'),
-                    ui.choice(name='position_3', label='Position 3')
+                    ui.choice(name='Position 1', label='Backend Engineer'),
+                    ui.choice(name='position_2', label='Frontend Engineer'),
+                    ui.choice(name='position_3', label='Data Scientist')
 
         ])])
         q.page['filter2'] = ui.form_card(
             box='filters',
             items=[
                 ui.dropdown(name='region', label='Region', choices=[
-                    ui.choice(name='region_1', label='Region 1'),
-                    ui.choice(name='region_2', label='Region 2'),
-                    ui.choice(name='region_3', label='Region 3')
+                    ui.choice(name='region_1', label='ASEAN'),
+                    ui.choice(name='region_2', label='Greater China'),
+                    ui.choice(name='region_3', label='Japan')
         ])])
         q.page['filter3'] = ui.form_card(
             box='filters',
             items=[
                 ui.dropdown(name='department', label='Department', choices=[
-                    ui.choice(name='department_1', label='Department 1'),
-                    ui.choice(name='department_2', label='Department 2'),
-                    ui.choice(name='department_3', label='Department 3')
+                    ui.choice(name='department_1', label='Technology'),
+                    ui.choice(name='department_2', label='Risk'),
+                    ui.choice(name='department_3', label='Finance')
         ])])
 
         # q.page['text1'] = ui.form_card(
@@ -97,30 +97,32 @@ async def serve(q: Q):
     
     ])
         
+        radar_data = json.loads(
+            requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()
+        )
         # Create table title:
         q.page['tb_title'] = ui.form_card(
             box= ui.box(zone='rtop', size='0'),
             items=[
-                ui.text_l('| Top 4 Candidate Recommendation'),
+                ui.text_l(f'| Top {min(len(radar_data),4)} Candidate Recommendation'),
             ],
         )
 
         # Create Radar plots
-        radar_data = json.loads(
-            requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()
-        )
+        
+        print(radar_data)
 
-        for i in range(1, n_top_candidates+1):
+        for i in range(1, min(len(radar_data)+1,n_top_candidates+1)):
+            print(i)
             q.page[f"top{i}Radar"] = ui.plot_card(
                 box = ui.box('rmid'),
                 title = f"Candidate {i}",
-                data = da('Metrics Score', 6, rows=[
-                    ('Work Attitude', radar_data[i-1]['candidate_workAttitude']),
-                    ('Adaptability', radar_data[i-1]['candidate_adaptability']),
-                    ('Collaboration', radar_data[i-1]['candidate_collaboration']),
-                    ('Communication', radar_data[i-1]['candidate_communication']),
-                    ('Work Ethics', radar_data[i-1]['candidate_workEthics']),
-                    ('Leadership', radar_data[i-1]['candidate_leaderShip']),
+                data = da('Metrics Score', 5, rows=[
+                    ('API design experience', radar_data[i-1]['apiDesignExperience']),
+                    ('Framework knowledge', radar_data[i-1]['frameworkKnowledge']),
+                    ('Databases skill', radar_data[i-1]['databaseSkill']),
+                    ('Cybersecurity knowledge', radar_data[i-1]['cybersecurityKnowledge']),
+                    ('App dev experience', radar_data[i-1]['appDevExperience']),
                 ]),
                 plot=ui.plot([
                 ui.mark(
@@ -166,28 +168,10 @@ async def serve(q: Q):
             ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
     ])
         # Upload button
-        links = q.args.user_files
-        if links:
-            items = [ui.text_xl('Files uploaded!')]
-            for link in links:
-                local_path = await q.site.download(link, '.')
-                #
-                # The file is now available locally; process the file.
-                # To keep this example simple, we just read the file size.
-                #
-                size = os.path.getsize(local_path)
-
-                items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
-                # Clean up
-                os.remove(local_path)
-
-            items.append(ui.button(name='back', label='Back', primary=True))
-            q.page['Upload'].items = items
-        else:
-            q.page['Upload'] = ui.form_card(box='lbottom', items=[
-                ui.text_xl('Upload candidate resume files here'),
-                ui.file_upload(name='user_files', label='Upload', multiple=True),
-            ])
+        q.page['Upload'] = ui.form_card(box='lbottom', items=[
+            ui.text_xl('Upload candidate resume files here'),
+            ui.file_upload(name='user_files', label='Upload', multiple=True, file_extensions=['pdf']),
+        ])
 
         ### Chat Bot ###
         q.client.current_load_page = len(prev_messages)
@@ -229,12 +213,11 @@ async def serve(q: Q):
                     box = ui.box('rmid'),
                     title = ''.join(['Candidate', str(i)]),
                     data = da('Metrics Score', 6, rows=[
-                        ('Work Attitude', 1),
-                        ('Adaptability', 1),
-                        ('Collaboration', 1),
-                        ('Communication', 1),
-                        ('Work Ethics', 3),
-                        ('Leadership', 3),
+                        ('API design experience', 1),
+                        ('Framework knowledge', 1),
+                        ('Databases skill', 1),
+                        ('Cybersecurity knowledge', 1),
+                        ('App dev experience', 3),
                     ]),
                     plot=ui.plot([
                     ui.mark(
@@ -249,6 +232,36 @@ async def serve(q: Q):
                         )
                     ]),
                 )
+        ################
+
+        ### File Upload ###
+        if q.args.user_files:
+            links = q.args.user_files 
+            items = [ui.text_xl('Files uploaded!')]
+            for link in links:
+                local_path = await q.site.download(link, '.')
+                #
+                # The file is now available locally; process the file.
+                # To keep this example simple, we just read the file size.
+                #
+                size = os.path.getsize(local_path)
+
+                with open(local_path, 'rb') as file:
+                    files = {
+                        'file': (local_path, file),
+                    }
+
+                    response = requests.post('http://localhost:4000/file/upload', files=files)
+                print(response.text)
+
+
+                items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
+                # Clean up
+                os.remove(local_path)
+
+            items.append(ui.button(name='back', label='Back', primary=True))
+            q.page['Upload'].items = items
+
         ################
 
         ### Chat Bot ### 
@@ -275,4 +288,3 @@ async def serve(q: Q):
 
         ################
     await q.page.save()
-

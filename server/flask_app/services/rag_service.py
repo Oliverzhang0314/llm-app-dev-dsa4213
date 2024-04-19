@@ -25,10 +25,11 @@ def rag_file_upload_service(filenames:list, client=client, collection_id=collect
     # Ingest documents (Creates previews, chunks and embeddings)
     client.ingest_uploads(collection_id, upload_files)
 
-def rag_query_service(filenames:list, queries:list, client=client, collection_id=collection_id):
+def rag_query_service(queries:list, filenames=None, client=client, collection_id=collection_id):
 
     # upload the file to h2o platform
-    rag_file_upload_service(filenames)
+    if filenames:
+        rag_file_upload_service(filenames)
     
     # Create a chat session
     chat_session_id = client.create_chat_session(collection_id)

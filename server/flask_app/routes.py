@@ -37,9 +37,14 @@ def upload_file():
 
     try:
         # parese reqeust to get arguments
-        position = request.form.get('position')
-        region = request.form.get('region')
-        department = request.form.get('department')
+        
+        # position = request.form.get('position')
+        # region = request.form.get('region')
+        # department = request.form.get('department')
+        
+        position = "software engineer"
+        region = "singapore"
+        department = "swe"
         
         # generate candidate profile
         profile = create_profile(filenames, position, region, department)

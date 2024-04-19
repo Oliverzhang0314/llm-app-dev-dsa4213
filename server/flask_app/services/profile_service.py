@@ -37,16 +37,15 @@ def create_profile(filenames:list, position:str, region:str, department:str):
         candidate's highest education certificate as candidateEducation, \
         candidate's best technical strength in one word as candidateStrength, \
         candidate's most recent job ending time as candidateMostRecentJobTime, \
-        candidate's workAttitude score with a float ranging from 1-10 as candidateWorkAttitude, \
-        candidate's adaptability score with a float ranging from 1-10 as candidateAdaptability, \
-        candidate's collaboration score with a float ranging from 1-10 as candidateCollaboration, \
-        candidate's communication score with a float ranging from 1-10 as candidateCommunication, \
-        candidate's workEthics score with a float ranging from 1-10 as candiateWorkEthics, \
-        candidate's leaderShip score with a float ranging from 1-10 as candidateLeadership. \
+        candidate's api design experience score with a float ranging from 0-10 as apiDesignExperience (0 if Nan), \
+        candidate's framework Knowledge score with a float ranging from 0-10 as framework knowledge (0 if Nan), \
+        candidate's database skills score with a float ranging from 0-10 as databseSkill (0 if Nan), \
+        candidate's cybersecurity knowledge score with a float ranging from 0-10 as cybersecurityKnowledge(0 if Nan), \
+        candidate's app development experience score with a float ranging from 0-10 as appDevExperience(0 if Nan), \
         "
     ]
     # use predefined prompts to query LLM
-    replies = rag_query_service(filenames, prompts)
+    replies = rag_query_service(prompts, filenames)
 
     # Use regex to extract JSON information
     json_data = re.search(r'{.*}', replies[prompts[0]].replace("\n", ""))
@@ -57,6 +56,8 @@ def create_profile(filenames:list, position:str, region:str, department:str):
 
     # parse the replied natural language sentences to structured data
     profile = json.loads(json_data)
+    print(profile)
+
 
     # store the extracted data in database
     sql = """INSERT INTO candidates 
@@ -67,16 +68,15 @@ def create_profile(filenames:list, position:str, region:str, department:str):
             candidate_education, 
             candidate_strength, 
             candidate_MostRescentJobTime, 
-            candidate_workAttitude, 
-            candidate_adaptability, 
-            candidate_collaboration, 
-            candidate_communication,
-            candidate_workEthics, 
-            candidate_leaderShip, 
+            apiDesignExperience, 
+            frameworkKnowledge, 
+            databaseSkill, 
+            cybersecurityKnowledge,
+            appDevExperience, 
             position_applied, 
             region, 
             department) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             
     cursor.execute(
         sql, 
@@ -87,12 +87,11 @@ def create_profile(filenames:list, position:str, region:str, department:str):
         profile.get('candidateEducation'), 
         profile.get("candidateStrength"), 
         profile.get("candidateMostRecentJobTime"), 
-        profile.get("candidateWorkAttitude"), 
-        profile.get("candidateAdaptability"), 
-        profile.get("candidateCollaboration"), 
-        profile.get("candidateCommunication"),
-        profile.get("candidateWorkEthics"), 
-        profile.get("candidateLeadership"), 
+        profile.get("apiDesignExperience"), 
+        profile.get("frameworkKnowledge"), 
+        profile.get("databaseSkill"), 
+        profile.get("cybersecurityKnowledge"),
+        profile.get("appDevExperience"), 
         position, 
         region, 
         department))
