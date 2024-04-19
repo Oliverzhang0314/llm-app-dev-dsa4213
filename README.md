@@ -40,6 +40,27 @@ We appreciate the dedication and expertise of each team member in making this pr
 - **H20eGPT chatbot**: Embedded chatbox enable employees to further understand candidates from customized prespective and therefore effectively assist decision-making under evaluation of different metrics.
 
 ## Installation with Python
+### File structure
+```bash
+.
+├── README.md
+├── frontend
+│   ├── chatbot.py
+│   ├── dashboard.py
+│   └── filters.py
+├── requirements.txt
+└── server
+    ├── config.py
+    ├── flask_app
+    │   ├── __init__.py
+    │   ├── routes.py
+    │   └── services
+    ├── main.py
+    ├── schema
+    │   ├── 0310.sql
+    │   └── dummy.sql
+    └── utils.py
+```
 
 ### 1. Create virtual environments 
     
