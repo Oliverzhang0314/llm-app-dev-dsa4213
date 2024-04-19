@@ -27,7 +27,7 @@ async def serve(q: Q):
                     ui.zone('middle', direction=ui.ZoneDirection.ROW, size='85%',
                             zones=[ui.zone('middle_left',size='35%', direction=ui.ZoneDirection.COLUMN,
                                         zones=[ui.zone('ltop', size='10%'),
-                                                ui.zone('lbottom', size='60%')]),
+                                                ui.zone('lbottom', size='79%')]),
                                 ui.zone('middle_right', size='65%',direction=ui.ZoneDirection.COLUMN, 
                                         zones=[ui.zone('rtop'),
                                                 ui.zone('rmid', align = 'center', justify ='between', direction = ui.ZoneDirection.ROW),
@@ -56,26 +56,26 @@ async def serve(q: Q):
             box='filters',
             items=[
                 ui.dropdown(name='open_positions', label='Open Positions', choices=[
-                    ui.choice(name='position_1', label='Position 1'),
-                    ui.choice(name='position_2', label='Position 2'),
-                    ui.choice(name='position_3', label='Position 3')
+                    ui.choice(name='Position 1', label='Backend Engineer'),
+                    ui.choice(name='position_2', label='Frontend Engineer'),
+                    ui.choice(name='position_3', label='Data Scientist')
 
         ])])
         q.page['filter2'] = ui.form_card(
             box='filters',
             items=[
                 ui.dropdown(name='region', label='Region', choices=[
-                    ui.choice(name='region_1', label='Region 1'),
-                    ui.choice(name='region_2', label='Region 2'),
-                    ui.choice(name='region_3', label='Region 3')
+                    ui.choice(name='region_1', label='ASEAN'),
+                    ui.choice(name='region_2', label='Greater China'),
+                    ui.choice(name='region_3', label='Japan')
         ])])
         q.page['filter3'] = ui.form_card(
             box='filters',
             items=[
                 ui.dropdown(name='department', label='Department', choices=[
-                    ui.choice(name='department_1', label='Department 1'),
-                    ui.choice(name='department_2', label='Department 2'),
-                    ui.choice(name='department_3', label='Department 3')
+                    ui.choice(name='department_1', label='Technology'),
+                    ui.choice(name='department_2', label='Risk'),
+                    ui.choice(name='department_3', label='Finance')
         ])])
 
         # q.page['text1'] = ui.form_card(
@@ -115,12 +115,11 @@ async def serve(q: Q):
                 box = ui.box('rmid'),
                 title = f"Candidate {i}",
                 data = da('Metrics Score', 6, rows=[
-                    ('Work Attitude', radar_data[i-1]['candidate_workAttitude']),
-                    ('Adaptability', radar_data[i-1]['candidate_adaptability']),
-                    ('Collaboration', radar_data[i-1]['candidate_collaboration']),
-                    ('Communication', radar_data[i-1]['candidate_communication']),
-                    ('Work Ethics', radar_data[i-1]['candidate_workEthics']),
-                    ('Leadership', radar_data[i-1]['candidate_leaderShip']),
+                    ('API design experience', radar_data[i-1]['candidate_workAttitude']),
+                    ('Framework knowledge', radar_data[i-1]['candidate_adaptability']),
+                    ('Databases skill', radar_data[i-1]['candidate_collaboration']),
+                    ('Cybersecurity knowledge', radar_data[i-1]['candidate_communication']),
+                    ('App dev experience', radar_data[i-1]['candidate_workEthics']),
                 ]),
                 plot=ui.plot([
                 ui.mark(
@@ -240,12 +239,11 @@ async def serve(q: Q):
                     box = ui.box('rmid'),
                     title = ''.join(['Candidate', str(i)]),
                     data = da('Metrics Score', 6, rows=[
-                        ('Work Attitude', 1),
-                        ('Adaptability', 1),
-                        ('Collaboration', 1),
-                        ('Communication', 1),
-                        ('Work Ethics', 3),
-                        ('Leadership', 3),
+                        ('API design experience', 1),
+                        ('Framework knowledge', 1),
+                        ('Databases skill', 1),
+                        ('Cybersecurity knowledge', 1),
+                        ('App dev experience', 3),
                     ]),
                     plot=ui.plot([
                     ui.mark(
