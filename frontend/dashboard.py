@@ -153,8 +153,9 @@ async def serve(q: Q):
         q.page['table'] = ui.form_card(box='rbottom', items=[
         ui.table(
             name='table',
-            columns=[ui.table_column(name=n, label=l) for l, n in labels.items()],
+            columns=[ui.table_column(name=n, label=l, filterable=True) for l, n in labels.items()],
             rows=[ui.table_row(name=f'row{i}', cells=[str(row[label]) for label in labels.values()]) for i, row in enumerate(data)],
+            downloadable=True,
         )
     ])
         
