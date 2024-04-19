@@ -1,4 +1,4 @@
-h2o-wave
+h2o-wave==1.1.2
 h2ogpte==1.4.9
 Flask == 3.0.0
 Flask-Uploads 
