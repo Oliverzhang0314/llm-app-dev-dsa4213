@@ -1,7 +1,7 @@
 from h2ogpte import H2OGPTE
 from flask import current_app as app, jsonify, request
 import os
-
+import json
 # create a H2OGPT client
 client = H2OGPTE(
     address=app.config['H2O_ADDRESS'],
@@ -49,10 +49,17 @@ def rag_query_service(queries:list, filenames=None, client=client, collection_id
                     break
                 except TimeoutError:
                     i+=1
-                    if i == 3:
-                        replies[q] = "Timed out after 3 attempts. Please try again later."
+                    if i == 5:
+                        replies[q] = "Timed out after 5 attempts. Please try again later."
                         break
                     continue
+                except json.JSONDecodeError as json_error:
+                    replies[q] = f"Error decoding JSON content: {json_error}"
+                except Exception as e:
+                # Handle other exceptions (e.g., connection errors)
+                    replies[q] = f"Error occurred: {e}"
+                    break
+            break
     
     return replies
 

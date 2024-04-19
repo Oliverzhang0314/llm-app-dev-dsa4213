@@ -156,8 +156,9 @@ async def serve(q: Q):
         q.page['table'] = ui.form_card(box='rbottom', items=[
         ui.table(
             name='table',
-            columns=[ui.table_column(name=n, label=l) for l, n in labels.items()],
+            columns=[ui.table_column(name=n, label=l, filterable=True) for l, n in labels.items()],
             rows=[ui.table_row(name=f'row{i}', cells=[str(row[label]) for label in labels.values()]) for i, row in enumerate(data)],
+            downloadable=True,
         )
     ])
         
@@ -168,10 +169,12 @@ async def serve(q: Q):
             ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
     ])
         # Upload button
+
         q.page['Upload'] = ui.form_card(box='lbottom', items=[
             ui.text_xl('Upload candidate resume files here'),
             ui.file_upload(name='user_files', label='Upload', multiple=True, file_extensions=['pdf']),
         ])
+
 
         ### Chat Bot ###
         q.client.current_load_page = len(prev_messages)
