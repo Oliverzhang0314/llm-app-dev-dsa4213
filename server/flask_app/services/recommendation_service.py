@@ -108,13 +108,12 @@ def radar_plot(position, region, dept, k: int=4):
     # Execute a SELECT query
     query = f"""
             SELECT 
-                candidate_workAttitude,
-                candidate_adaptability,
-                candidate_collaboration,
-                candidate_communication,
-                candidate_workEthics,
-                candidate_leaderShip,
-                (candidate_workAttitude + candidate_adaptability + candidate_collaboration + candidate_communication + candidate_workEthics + candidate_leaderShip) AS total_score
+                apiDesignExperience,
+                frameworkKnowledge,
+                databaseSkill,
+                cybersecurityKnowledge,
+                appDevExperience,
+                (apiDesignExperience + frameworkKnowledge + databaseSkill + cybersecurityKnowledge + appDevExperience) AS total_score
             FROM candidates
             WHERE {position} AND {region} AND {dept}
             ORDER BY total_score DESC

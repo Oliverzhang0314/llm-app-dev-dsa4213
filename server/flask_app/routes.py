@@ -44,10 +44,15 @@ def upload_file():
                 return jsonify({'error': str(e)}), 500
 
     try:
-        # parse request to get arguments
-        position = request.form.get('position')
-        region = request.form.get('region')
-        department = request.form.get('department')
+        # parese reqeust to get arguments
+        
+        # position = request.form.get('position')
+        # region = request.form.get('region')
+        # department = request.form.get('department')
+        
+        position = "software engineer"
+        region = "singapore"
+        department = "swe"
         
         # generate candidate profile
         profile = create_profile(filenames, position, region, department)

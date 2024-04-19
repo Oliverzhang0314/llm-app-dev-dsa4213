@@ -97,29 +97,32 @@ async def serve(q: Q):
     
     ])
         
+        radar_data = json.loads(
+            requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()
+        )
         # Create table title:
         q.page['tb_title'] = ui.form_card(
             box= ui.box(zone='rtop', size='0'),
             items=[
-                ui.text_l('| Top 4 Candidate Recommendation'),
+                ui.text_l(f'| Top {min(len(radar_data),4)} Candidate Recommendation'),
             ],
         )
 
         # Create Radar plots
-        radar_data = json.loads(
-            requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()
-        )
+        
+        print(radar_data)
 
-        for i in range(1, n_top_candidates+1):
+        for i in range(1, min(len(radar_data)+1,n_top_candidates+1)):
+            print(i)
             q.page[f"top{i}Radar"] = ui.plot_card(
                 box = ui.box('rmid'),
                 title = f"Candidate {i}",
-                data = da('Metrics Score', 6, rows=[
-                    ('API design experience', radar_data[i-1]['candidate_workAttitude']),
-                    ('Framework knowledge', radar_data[i-1]['candidate_adaptability']),
-                    ('Databases skill', radar_data[i-1]['candidate_collaboration']),
-                    ('Cybersecurity knowledge', radar_data[i-1]['candidate_communication']),
-                    ('App dev experience', radar_data[i-1]['candidate_workEthics']),
+                data = da('Metrics Score', 5, rows=[
+                    ('API design experience', radar_data[i-1]['apiDesignExperience']),
+                    ('Framework knowledge', radar_data[i-1]['frameworkKnowledge']),
+                    ('Databases skill', radar_data[i-1]['databaseSkill']),
+                    ('Cybersecurity knowledge', radar_data[i-1]['cybersecurityKnowledge']),
+                    ('App dev experience', radar_data[i-1]['appDevExperience']),
                 ]),
                 plot=ui.plot([
                 ui.mark(
@@ -166,39 +169,12 @@ async def serve(q: Q):
             ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
     ])
         # Upload button
-        links = q.args.user_files
-        if links:
-            items = [ui.text_xl('Files uploaded!')]
-            for link in links:
-                local_path = await q.site.download(link, '.')
-                #
-                # The file is now available locally; process the file.
-                # To keep this example simple, we just read the file size.
-                #
-                size = os.path.getsize(local_path)
 
-                items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
-                # Clean up
-                os.remove(local_path)
+        q.page['Upload'] = ui.form_card(box='lbottom', items=[
+            ui.text_xl('Upload candidate resume files here'),
+            ui.file_upload(name='user_files', label='Upload', multiple=True, file_extensions=['pdf']),
+        ])
 
-            items.append(ui.button(name='back', label='Back', primary=True))
-            q.page['Upload'].items = items
-        else:
-            q.page['Upload'] = ui.form_card(box='lbottom', items=[
-                ui.text_xl('Upload candidate resume files here'),
-                ui.file_upload(name='user_files', label='Upload', multiple=True),
-            ])
-            links = q.args.user_files
-            items = [ui.text_xl('Files uploaded!')]
-            for link in links:
-                local_path = await q.site.download(link, '.')
-                size = os.path.getsize(local_path)
-                items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
-                # Clean up
-                os.remove(local_path)
-            items.append(ui.button(name='back', label='Back', primary=True))
-            q.page['Upload'].items = items
-        await q.page.save()
 
         ### Chat Bot ###
         q.client.current_load_page = len(prev_messages)
@@ -261,6 +237,36 @@ async def serve(q: Q):
                 )
         ################
 
+        ### File Upload ###
+        if q.args.user_files:
+            links = q.args.user_files 
+            items = [ui.text_xl('Files uploaded!')]
+            for link in links:
+                local_path = await q.site.download(link, '.')
+                #
+                # The file is now available locally; process the file.
+                # To keep this example simple, we just read the file size.
+                #
+                size = os.path.getsize(local_path)
+
+                with open(local_path, 'rb') as file:
+                    files = {
+                        'file': (local_path, file),
+                    }
+
+                    response = requests.post('http://localhost:4000/file/upload', files=files)
+                print(response.text)
+
+
+                items.append(ui.link(label=f'{os.path.basename(link)} ({size} bytes)', download=True, path=link))
+                # Clean up
+                os.remove(local_path)
+
+            items.append(ui.button(name='back', label='Back', primary=True))
+            q.page['Upload'].items = items
+
+        ################
+
         ### Chat Bot ### 
         # New message
         if q.args.chatbot:
@@ -285,4 +291,3 @@ async def serve(q: Q):
 
         ################
     await q.page.save()
-
