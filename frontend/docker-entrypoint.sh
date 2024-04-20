@@ -4,10 +4,10 @@ set -e
 
 export H2O_WAVE_ADDRESS="http://127.0.0.1:10101"
 
-printf '\n$ ( cd %s && ./waved -listen ":%s" & )\n\n' "${WAVE_PATH}" "${PORT}"
-(cd "${WAVE_PATH}" && ./waved -listen ":${PORT}" &)
+printf '\n$ ( cd %s && ./waved -listen ":%s" & )\n\n' "${WAVE_PATH}" "10101"
+(cd "${WAVE_PATH}" && ./waved -listen ":10101" &)
 
-sleep 3
+sleep 10
 
 printf '\n$ wave run --no-reload --no-autostart %s\n\n' "$PYTHON_MODULE"
 

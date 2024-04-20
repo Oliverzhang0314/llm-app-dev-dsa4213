@@ -1,6 +1,6 @@
 from h2o_wave import main, app, Q, ui
 from h2o_wave import data as da
-from .chatbot import *
+from chatbot import *
 import os
 import os.path
 import asyncio

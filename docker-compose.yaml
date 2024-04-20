@@ -14,14 +14,14 @@ services:
       - MYSQL_PASSWORD = 'dsa4213'
       - MYSQL_PORT = 3306
 
-  app:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "10101:10101"
-    depends_on:
-      - server
+  # app:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "10101:10101"
+  #   depends_on:
+  #     - server
 
   server:
     build:
