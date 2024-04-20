@@ -46,8 +46,7 @@ We appreciate the dedication and expertise of each team member in making this pr
 ├── README.md
 ├── frontend
 │   ├── chatbot.py
-│   ├── dashboard.py
-│   └── filters.py
+│   └── dashboard.py
 ├── requirements.txt
 └── server
     ├── config.py
