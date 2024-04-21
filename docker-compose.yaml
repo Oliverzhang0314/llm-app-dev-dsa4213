@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:latest
+    command: --init-file /docker-entrypoint-initdb.d/0310.sql
+    volumes:
+      - ./server/schema/0310.sql:/docker-entrypoint-initdb.d/0310.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dsa4213
+      - MYSQL_HOST = 'localhost'
+      - MYSQL_USER = 'root'
+      - MYSQL_PASSWORD = 'dsa4213'
+      - MYSQL_PORT = 3306
+      

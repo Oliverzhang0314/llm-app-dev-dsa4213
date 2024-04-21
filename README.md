@@ -69,11 +69,15 @@ We appreciate the dedication and expertise of each team member in making this pr
 
     pip install -r requirements.txt
 
-### 3. Set server folder as the working directory and Start flask app
+### 3. Set up database. Make sure you have docker installed. 
+
+    docker compose up -d
+
+### 4. Set server folder as the working directory and Start flask app
     
     cd /server -> python main.py
 
-### 4. Open another teriminal, Set the frontend folder as the working directory and Start wave app
+### 5. Open another teriminal, Set the frontend folder as the working directory and Start wave app
 
     cd /frontend -> wave run dashboard.py
     
