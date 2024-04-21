@@ -13,8 +13,19 @@ def index():
     """
     return "Welcome to the DSA4213 Group Whisper server"
 
+    """
+    Endpoint for the root URL.
+    """
+    return "Welcome to the DSA4213 Group Whisper server"
+
 @app.route('/file/upload', methods=['GET','POST'])
 def upload_file():
+    """
+    Endpoint for uploading files and generating candidate profile.
+
+    Returns:
+        Response: JSON response indicating success or failure.
+    """
     """
     Endpoint for uploading files and generating candidate profile.
 
@@ -55,6 +66,7 @@ def upload_file():
         profile = create_profile(filenames, position, region, department)
         data={
             'status': 'File uploaded successfully',
+            'status': 'File uploaded successfully',
             'data' : profile
         }
         response = make_response(data, 200)
@@ -63,7 +75,14 @@ def upload_file():
         return jsonify({'error': str(e)}), 500
 
 @app.route('/rag/query', methods=['POST'])
+@app.route('/rag/query', methods=['POST'])
 def rag_query():
+    """
+    Endpoint for querying the RAG service.
+
+    Returns:
+        Response: JSON response with replies from the RAG service.
+    """
     """
     Endpoint for querying the RAG service.
 
@@ -79,8 +98,15 @@ def rag_query():
     except Exception as e:
         return jsonify({'error':str(e)}), 500
     
+    
 @app.route('/rag/summary', methods=['GET','POST'])
 def rag_summary():
+    """
+    Endpoint for summarizing the documents in the collection.
+
+    Returns:
+        Response: JSON response with summaries of the documents.
+    """
     """
     Endpoint for summarizing the documents in the collection.
 
@@ -104,6 +130,12 @@ def candidate_rank():
     Returns:    
         Response: JSON response with the candidate recommendation table.
     """
+    """
+    Endpoint for getting the candidate recommendation table.
+
+    Returns:    
+        Response: JSON response with the candidate recommendation table.
+    """
     try:
         position = request.args.get('position', "position_applied")
         region = request.args.get('region', "region")
@@ -121,6 +153,12 @@ def candidate_radar_plot():
     Returns:
         Response: JSON response with the candidate recommendation radar plot.
     """
+    """
+    Endpoint for getting the candidate recommendation radar plot.
+
+    Returns:
+        Response: JSON response with the candidate recommendation radar plot.
+    """
     try:
         position = request.args.get('position', "position_applied")
         region = request.args.get('region', "region")
@@ -132,6 +170,12 @@ def candidate_radar_plot():
     
 @app.route('/candidate/experience-levels', methods=['GET'])
 def candidate_experience_distribution():
+    """
+    Endpoint for getting the candidate experience distribution.
+
+    Returns:    
+        Response: JSON response with the candidate experience distribution.
+    """
     """
     Endpoint for getting the candidate experience distribution.
 
