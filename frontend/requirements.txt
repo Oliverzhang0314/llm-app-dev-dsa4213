@@ -1,7 +1,0 @@
-h2o-wave==1.1.2 
-h2ogpte==1.4.10
-Flask == 3.0.0
-Flask-Uploads 
-Werkzeug
-PyMySQL
-mysql-connector-python==8.3.0
