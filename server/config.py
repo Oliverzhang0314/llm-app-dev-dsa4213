@@ -3,8 +3,11 @@ import os
 baseurl = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    H2O_API_KEY = 'sk-33L5yNLSb3gX4GwPjZf7sV5o9pI3YgeY1E0kj5yHI7ajqbAs'
-    H2O_COLLECTIOM_API_KEY = 'sk-QxCDdaRYFHrw3fZLQ8b0EcQmikRNENWqsPkrXi2af928q1KB'
+    """
+    Configuration class for the Flask app.
+    """
+    H2O_API_KEY = 'sk-INgifCNRTjym4LkiLpzmZfds7qXjH0vOivg7288dOUTYtu6y'
+    H2O_COLLECTIOM_API_KEY = 'sk-ohZPI6qLUowihiQG3ulMYcxwLLiEoROCEhqk0elgjbE50m3K'
     H2O_ADDRESS = 'https://h2ogpte.genai.h2o.ai'
     UPLOAD_FOLDER = './docs'
 

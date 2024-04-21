@@ -13,3 +13,4 @@ www/
 waved
 share/
 .env
+server/config.py
