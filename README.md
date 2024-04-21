@@ -41,7 +41,7 @@ We appreciate the dedication and expertise of each team member in making this pr
 
 ## Working pipeline
 
-![alt text](/llm-app-dev-dsa4213/flow.png)
+![alt text](flow.png)
 
 
 ## Installation with Python
