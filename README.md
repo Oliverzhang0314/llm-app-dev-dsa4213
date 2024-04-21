@@ -73,7 +73,7 @@ We appreciate the dedication and expertise of each team member in making this pr
     
     cd /server -> python main.py
 
-### 4. Open another teriminal, Set the frontend folder as the working directory and Start wave app
+### 4. Open another terminal, Set the frontend folder as the working directory and Start wave app
 
     cd /frontend -> wave run dashboard.py
     
