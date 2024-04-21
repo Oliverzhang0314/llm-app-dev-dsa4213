@@ -19,3 +19,4 @@ def run_flask_app():
             debug=True,
             use_reloader=True,
         )
+run_flask_app()
