@@ -158,6 +158,7 @@ async def serve(q: Q):
             name='table',
             columns=[ui.table_column(name=n, label=l) for l, n in labels.items()],
             rows=[ui.table_row(name=f'row{i}', cells=[str(row[label]) for label in labels.values()]) for i, row in enumerate(data)],
+            downloadable=True,
         )
     ])
         
@@ -179,10 +180,12 @@ async def serve(q: Q):
             else:
                 senior += count
         total = junior + mideum + senior
+
         
-        j_rate = float(junior/total)
-        m_rate = float(mideum/total)
-        s_rate = float(senior/total)
+        
+        j_rate = float(junior/total) if total != 0 else 0
+        m_rate = float(mideum/total) if total !=0 else 0
+        s_rate = float(senior/total) if total !=0 else 0
         
         print(j_rate, m_rate, s_rate)
 
