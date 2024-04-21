@@ -1,6 +1,6 @@
 from h2o_wave import main, app, Q, ui
 from h2o_wave import data as da
-from chatbot import *
+from .chatbot import *
 import os
 import os.path
 import asyncio
@@ -163,10 +163,34 @@ async def serve(q: Q):
     ])
         
         # Create Pie Chart (Experience Level Distribution)
+        ex_data = json.loads(
+            requests.get('http://localhost:4000/candidate/experience-levels').json()
+        )
+        junior = 0
+        mideum = 0
+        senior = 0
+        for ex in ex_data:
+            year = ex['candidate_experience']
+            count = ex['count']
+
+            if year <= 3:
+                junior += count
+            elif year <=6:
+                mideum += count
+            else:
+                senior += count
+        total = junior + mideum + senior
+        
+        j_rate = float(junior/total)
+        m_rate = float(mideum/total)
+        s_rate = float(senior/total)
+        
+        print(j_rate, m_rate, s_rate)
+
         q.page['exp_dits'] = ui.wide_pie_stat_card(box='lbottom', title='Experience Level Distribution', pies=[
-            ui.pie(label='0-1 years', value='65%', fraction=0.65, color='blue'),
-            ui.pie(label='2-4 years', value='25%', fraction=0.25, color='pink'),
-            ui.pie(label='>4 years', value='10%', fraction=0.10, color='salmon'),
+            ui.pie(label='0-3 years', value=f'{j_rate*100}%', fraction=j_rate, color='blue'),
+            ui.pie(label='3-6 years', value=f'{m_rate*100}%', fraction=m_rate, color='pink'),
+            ui.pie(label='>6 years', value=f'{s_rate*100}%', fraction=s_rate, color='salmon'),
     ])
         # Upload button
 
