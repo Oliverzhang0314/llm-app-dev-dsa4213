@@ -12,8 +12,6 @@ In today's competitive job market, organizations face the challenge of identifyi
 
 This project was brought to life by the collaborative efforts of the following team members:
 
-# HR Insights Dashboard with Candidates Recommendation Project
-
 ## Team
 
 This project was brought to life by the collaborative efforts of the following team members:
@@ -76,7 +74,7 @@ We appreciate the dedication and expertise of each team member in making this pr
 
 ### 3. Set up database. Make sure you have docker installed. 
 
-    docker compose up -d
+    docker-compose up -d
 
 ### 4. Set server folder as the working directory and Start flask app
     
