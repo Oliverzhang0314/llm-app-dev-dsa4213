@@ -5,7 +5,7 @@ services:
     image: mysql:latest
     command: --init-file /docker-entrypoint-initdb.d/db.sql
     volumes:
-      - ./server/schema/0310.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./server/schema/db.sql:/docker-entrypoint-initdb.d/db.sql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=dsa4213
