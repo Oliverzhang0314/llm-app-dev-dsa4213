@@ -1,15 +1,14 @@
-import os
 import mysql.connector
-from dotenv import load_dotenv
 import pandas as pd
-from datetime import datetime
 from flask import current_app as app, jsonify, request
 
-
-# Load environment variables from the .env file
-load_dotenv(os.path.join("..", "..", "..", ".env"))
-
 def connect_to_db():
+    """
+    Connect to the MySQL database using the configuration provided in the Flask app.
+
+    Returns:
+        mysql.connector.connection.MySQLConnection: The connection object to the MySQL database.
+    """
     connection = mysql.connector.connect(
         host=app.config['MYSQL_HOST'],
         user=app.config['MYSQL_USER'],
@@ -20,7 +19,18 @@ def connect_to_db():
     return connection
 
 def candidates_table(position, region, dept, k: int=10):
+    """
+    Get the candidate data from the MySQL database.
 
+    Parameters:
+        position (str): The position applied for by the candidate.
+        region (str): The region where the candidate is applying.
+        dept (str): The department where the candidate is applying.
+        k (int): The number of candidates to return.
+
+    Returns:
+        str: The candidate data in JSON format.
+    """
     # Connect to the MySQL database
     connection = connect_to_db()
 
@@ -80,6 +90,18 @@ def candidates_table(position, region, dept, k: int=10):
     return df.to_json(orient="records", index=False)
 
 def radar_plot(position, region, dept, k: int=4):
+    """
+    Get the candidate data from the MySQL database.
+
+    Parameters:
+        position (str): The position applied for by the candidate.
+        region (str): The region where the candidate is applying.
+        dept (str): The department where the candidate is applying.
+        k (int): The number of candidates to return.
+
+    Returns:
+        str: The candidate data in JSON format.
+    """
     # Connect to the MySQL database
     connection = connect_to_db()
 
@@ -136,6 +158,18 @@ def radar_plot(position, region, dept, k: int=4):
     return df.to_json(orient="records", index=False)
 
 def experience_distribution(position, region, dept):
+    """
+    Get the candidate data from the MySQL database.
+
+    Parameters:
+        position (str): The position applied for by the candidate.
+        region (str): The region where the candidate is applying.
+        dept (str): The department where the candidate is applying.
+
+    Returns:
+        str: The candidate data in JSON format.
+    """
+
     # Connect to the MySQL database
     connection = connect_to_db()
 

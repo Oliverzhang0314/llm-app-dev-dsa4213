@@ -193,10 +193,12 @@ async def serve(q: Q):
             ui.pie(label='>6 years', value=f'{s_rate*100}%', fraction=s_rate, color='salmon'),
     ])
         # Upload button
+
         q.page['Upload'] = ui.form_card(box='lbottom', items=[
             ui.text_xl('Upload candidate resume files here'),
             ui.file_upload(name='user_files', label='Upload', multiple=True, file_extensions=['pdf']),
         ])
+
 
         ### Chat Bot ###
         q.client.current_load_page = len(prev_messages)

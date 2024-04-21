@@ -18,11 +18,11 @@ This project was brought to life by the collaborative efforts of the following t
 
 This project was brought to life by the collaborative efforts of the following team members:
 
-- **Liau Zhan Yi**：Backend Developer
-- **Lian Kah Seng**：Frontend development
+- **Lian Kah Seng**：Frontend Developer
 - **Qiu Qishuo**：Frontend Developer
-- **Wang Jianing**：Backend Developer
 - **Wang Zhuoyu**：Frontend Developer
+- **Liau Zhan Yi**：Backend Developer
+- **Wang Jianing**：Backend Developer
 - **Zhang Xiangyu**：Backend Developer
 
 We appreciate the dedication and expertise of each team member in making this project a success!
