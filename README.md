@@ -8,9 +8,6 @@ Welcome to our HR Insights Dashboard with Candidates Recommendation project! Thi
 ## Overview
 
 In today's competitive job market, organizations face the challenge of identifying and hiring the best talent swiftly. Traditional methods of recruitment often fall short in providing actionable insights and personalized recommendations. Our project addresses this issue by employing cutting-edge technologies, including H2O.ai's Large Language Model and Wave H2O for intuitive dashboard visualization.
-## Team
-
-This project was brought to life by the collaborative efforts of the following team members:
 
 ## Team
 
