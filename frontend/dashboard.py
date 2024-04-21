@@ -143,7 +143,7 @@ async def serve(q: Q):
         )
 
         radar_data = json.loads(
-            f'"{requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()}"'
+            requests.get('http://localhost:4000/candidate/recommendation/radar-plot').json()
         )
         # Create table title:
         q.page["tb_title"] = ui.form_card(

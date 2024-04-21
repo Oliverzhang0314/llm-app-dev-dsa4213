@@ -16,18 +16,14 @@ CREATE TABLE candidates (
     candidate_education VARCHAR(255),
     candidate_strength VARCHAR(1000),
     candidate_MostRescentJobTime VARCHAR(255),
-    candidate_workAttitude FLOAT(8,2),
-    candidate_adaptability FLOAT(8,2),
-    candidate_collaboration FLOAT(8,2),
-    candidate_communication FLOAT(8,2),
-    candidate_workEthics FLOAT(8,2),
-    candidate_leaderShip FLOAT(8,2),
-    
+    apiDesignExperience FLOAT(8,2),
+    frameworkKnowledge FLOAT(8,2),
+    databaseSkill FLOAT(8,2),
+    cybersecurityKnowledge FLOAT(8,2),
+	appDevExperience FLOAT(8,2),
     position_applied VARCHAR(50),
 	region VARCHAR(50),
 	department VARCHAR(50)
-
-    -- TODO: discuss what other columns to add
 );
 
 

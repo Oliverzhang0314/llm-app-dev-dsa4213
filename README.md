@@ -39,6 +39,11 @@ We appreciate the dedication and expertise of each team member in making this pr
 
 - **H20eGPT chatbot**: Embedded chatbox enable employees to further understand candidates from customized prespective and therefore effectively assist decision-making under evaluation of different metrics.
 
+## Working pipeline
+
+![alt text](/llm-app-dev-dsa4213/flow.png)
+
+
 ## Installation with Python
 ### File structure
 ```bash
