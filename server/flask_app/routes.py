@@ -9,9 +9,9 @@ from .services.profile_service import *
 @app.route('/')
 def index():
     """
-    A simple route returning a welcome message.
+    Endpoint for the root URL.
     """
-    return "Welcome to the Flask server"
+    return "Welcome to the DSA4213 Group Whisper server"
 
 @app.route('/file/upload', methods=['GET','POST'])
 def upload_file():

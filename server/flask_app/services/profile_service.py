@@ -2,14 +2,15 @@ from flask import current_app as app
 from .rag_service import rag_query_service
 import mysql.connector
 import json
-from dotenv import load_dotenv
-import os
 import re
 
-# Load environment variables from the .env file
-load_dotenv(os.path.join("..", "..", "..", ".env"))
-
 def connect_to_db():
+    """
+    Connect to the MySQL database using the app's configuration settings.
+    
+    Returns:
+        mysql.connector.connection.MySQLConnection: The connection object to the MySQL database.
+    """
     connection = mysql.connector.connect(
         host=app.config['MYSQL_HOST'],
         user=app.config['MYSQL_USER'],
@@ -20,7 +21,18 @@ def connect_to_db():
     return connection
 
 def create_profile(filenames:list, position:str, region:str, department:str):
+    """
+    Create a candidate profile by querying the RAG service and storing the extracted data in the database.
 
+    Parameters:
+        filenames (list): List of filenames for the uploaded files.
+        position (str): The position applied for by the candidate.
+        region (str): The region where the candidate is applying.
+        department (str): The department where the candidate is applying.
+
+    Returns:
+        dict: The candidate profile data extracted from the RAG service.
+    """
     # Connect to the MySQL database
     connection = connect_to_db()
 
