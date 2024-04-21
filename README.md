@@ -71,7 +71,7 @@ We appreciate the dedication and expertise of each team member in making this pr
 
 ### 3. Set server folder as the working directory and Start flask app
     
-    cd /server -> python main.py
+    docker compose up -d
 
 ### 4. Open another teriminal, Set the frontend folder as the working directory and Start wave app
 
